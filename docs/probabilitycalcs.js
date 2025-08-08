@@ -68,4 +68,4 @@ function probability(parentAIVs, parentBIVs, targetIVs) {
     const g = gcd(numerator, denominator);
     return [numerator / g, denominator / g];
 }
-console.log(probability([0], [1], [0, 1]));
+console.log(probability([0], [1], [0, 1])); //seems to work! TODO: test more cases, maybe add tests?
