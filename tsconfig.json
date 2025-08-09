@@ -5,7 +5,8 @@
     "rootDir": "src",
     "outDir": "docs",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "incremental": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

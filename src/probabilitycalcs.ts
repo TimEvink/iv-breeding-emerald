@@ -88,8 +88,9 @@ function gcd(a: number, b: number): number {
 function probability(
     parentAIVs: number[],
     parentBIVs: number[],
-    targetIVs: number[]
-): [number, number] {
+    targetIVs: number[],
+    verbose: boolean = false
+): [number, number, number] {
     const n = targetIVs.length;
     const counts: number[] = Array(n + 1).fill(0);
     for (const config of configurationGenerator()) {
@@ -101,7 +102,19 @@ function probability(
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
     const denominator = 960 * 32 ** n;
     const g = gcd(numerator, denominator);
-    return [numerator / g, denominator / g];
+    if (verbose) {
+        console.log('Parent A IVs:', parentAIVs);
+        console.log('Parent B IVs:', parentBIVs);
+        console.log('Target IVs:', targetIVs);
+        for (let i = Math.min(n, 3); i >= 0; i--) {
+            console.log(`Number of configurations with ${i} inherited target IVs:`, counts[i]);
+        }
+        console.log(`Probability of obtaining target IVs: ${numerator / g}/${denominator / g} \u2248 1/${(denominator / numerator).toFixed(2)}`);
+
+    }
+    return [numerator / g, denominator / g, denominator / numerator];
 }
 
-console.log(probability([0], [1], [0, 1])); //seems to work! TODO: test more cases, maybe add tests?
+console.log(probability([0], [1], [0, 1]));
+console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
+
