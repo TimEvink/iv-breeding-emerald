@@ -1,0 +1,12 @@
+/* Default look */
+#target-ivs td {
+  cursor: pointer;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Selected look */
+#target-ivs td.selected {
+  background-color: lightgreen;
+  font-weight: bold;
+}
