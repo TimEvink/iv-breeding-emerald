@@ -1,3 +1,5 @@
+import { gcd } from './utils.js'
+import { combinations } from './utils.js'
 
 //stats are worked internally with by integers 0, 1, 2, 3, 4, 5, for respectively HP, Atk, Def, Sp.A, Sp.D and Spe.
 //also: 0 is used for parent A, 1 is used for parent B.
@@ -6,7 +8,7 @@ type IVinheritanceconfiguration = [
   [number, number],
   [number, number]
 ];
-// example: ((0, 0), (4, 1), (5, 0)) means in the inheritance process we have in order:
+// example: [[0, 0], [4, 1], [5, 0]] means in the inheritance process we have in order:
 // - HP is passed from parent A
 // - Sp.D is passed from parent B
 // - SpE is passed from A
@@ -17,7 +19,7 @@ type InheritedIVs = Map<number, number>;
 // for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 
 
-function* configurationGenerator(): Generator<IVinheritanceconfiguration> {
+function* configurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
     for (let s1 = 0; s1 < 6; s1++) {
         for (const s2 of [1, 2, 3, 4, 5]) {
             for (const s3 of [1, 3, 4, 5]) {
@@ -33,9 +35,9 @@ function* configurationGenerator(): Generator<IVinheritanceconfiguration> {
     }
 }
 
-function inheritedIVs(config: IVinheritanceconfiguration): InheritedIVs {
-    return new Map(config);
-}
+// function inheritedIVs(config: IVinheritanceconfiguration): InheritedIVs {
+//     return new Map(config);
+// }
 
 // for (const config of configurationGenerator()) {
 //     console.log(config, inheritedIvs(config));
@@ -78,12 +80,12 @@ function countTargetIVsInherited(
     }, 0);
 }
 
-function gcd(a: number, b: number): number {
-    while (b !== 0) {
-        [a, b] = [b, a % b];
-    }
-    return a;
-}
+// function gcd(a: number, b: number): number {
+//     while (b !== 0) {
+//         [a, b] = [b, a % b];
+//     }
+//     return a;
+// }
 
 function probability(
     parentAIVs: number[],
@@ -94,9 +96,9 @@ function probability(
     const n = targetIVs.length;
     const counts: number[] = Array(n + 1).fill(0);
     for (const config of configurationGenerator()) {
-        const IVs = inheritedIVs(config);
-        if (isRandomGenerationRemainingIVsPossible(IVs, parentAIVs, parentBIVs, targetIVs)) {
-            counts[countTargetIVsInherited(IVs, parentAIVs, parentBIVs, targetIVs)]++;
+        const inheritedIVs = new Map(config);
+        if (isRandomGenerationRemainingIVsPossible(inheritedIVs, parentAIVs, parentBIVs, targetIVs)) {
+            counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
         }
     }
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
@@ -110,11 +112,38 @@ function probability(
             console.log(`Number of configurations with ${i} inherited target IVs:`, counts[i]);
         }
         console.log(`Probability of obtaining target IVs: ${numerator / g}/${denominator / g} \u2248 1/${(denominator / numerator).toFixed(2)}`);
-
     }
     return [numerator / g, denominator / g, denominator / numerator];
 }
 
-console.log(probability([0], [1], [0, 1]));
-console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
+function* combinationsGenerator(
+    targetIVs: number[],
+    missingIVsmin: number,
+    missingIVsmax: number,
+): Generator<[number[], number[]]> {
+    const n = targetIVs.length;
+    for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
+        for (let j = n - missingIVsmax; j <= i; j++) {
+            console.log(i, j);
+            const seen = new Set();
+            for (const P of combinations<number>(targetIVs, i)) {
+                const Pstring = P.join('');
+                seen.add(Pstring);
+                for (const Q of combinations<number>(targetIVs, j)) {
+                    const Qstring = Q.join('');
+                    if (seen.has(Qstring) && (Pstring !== Qstring)) continue;
+                    yield [P, Q];
+                }
+            }
+        }
+    }
+}
+
+
+// for (const [P, Q] of combinationsGenerator([0, 1, 2, 3], 1, 2)) {
+//     console.log(P, Q);
+// }
+
+// console.log(probability([0], [1], [0, 1]));
+// console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
 

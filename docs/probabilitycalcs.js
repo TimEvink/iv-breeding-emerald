@@ -1,4 +1,5 @@
-"use strict";
+import { gcd } from './utils.js';
+import { combinations } from './utils.js';
 // for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 function* configurationGenerator() {
     for (let s1 = 0; s1 < 6; s1++) {
@@ -15,9 +16,9 @@ function* configurationGenerator() {
         }
     }
 }
-function inheritedIVs(config) {
-    return new Map(config);
-}
+// function inheritedIVs(config: IVinheritanceconfiguration): InheritedIVs {
+//     return new Map(config);
+// }
 // for (const config of configurationGenerator()) {
 //     console.log(config, inheritedIvs(config));
 // }
@@ -48,19 +49,19 @@ function countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs
         return count;
     }, 0);
 }
-function gcd(a, b) {
-    while (b !== 0) {
-        [a, b] = [b, a % b];
-    }
-    return a;
-}
+// function gcd(a: number, b: number): number {
+//     while (b !== 0) {
+//         [a, b] = [b, a % b];
+//     }
+//     return a;
+// }
 function probability(parentAIVs, parentBIVs, targetIVs, verbose = false) {
     const n = targetIVs.length;
     const counts = Array(n + 1).fill(0);
     for (const config of configurationGenerator()) {
-        const IVs = inheritedIVs(config);
-        if (isRandomGenerationRemainingIVsPossible(IVs, parentAIVs, parentBIVs, targetIVs)) {
-            counts[countTargetIVsInherited(IVs, parentAIVs, parentBIVs, targetIVs)]++;
+        const inheritedIVs = new Map(config);
+        if (isRandomGenerationRemainingIVsPossible(inheritedIVs, parentAIVs, parentBIVs, targetIVs)) {
+            counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
         }
     }
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
@@ -77,5 +78,27 @@ function probability(parentAIVs, parentBIVs, targetIVs, verbose = false) {
     }
     return [numerator / g, denominator / g, denominator / numerator];
 }
-console.log(probability([0], [1], [0, 1]));
-console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
+function* combinationsGenerator(targetIVs, missingIVsmin, missingIVsmax) {
+    const n = targetIVs.length;
+    for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
+        for (let j = n - missingIVsmax; j <= i; j++) {
+            console.log(i, j);
+            const seen = new Set();
+            for (const P of combinations(targetIVs, i)) {
+                const Pstring = P.join('');
+                seen.add(Pstring);
+                for (const Q of combinations(targetIVs, j)) {
+                    const Qstring = Q.join('');
+                    if (seen.has(Qstring) && (Pstring !== Qstring))
+                        continue;
+                    yield [P, Q];
+                }
+            }
+        }
+    }
+}
+// for (const [P, Q] of combinationsGenerator([0, 1, 2, 3], 1, 2)) {
+//     console.log(P, Q);
+// }
+// console.log(probability([0], [1], [0, 1]));
+// console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
