@@ -1,5 +1,3 @@
-//some helper functions
-
 //euclidean algorithm
 export function gcd(a: number, b: number): number {
     while (b !== 0) {
@@ -9,11 +7,7 @@ export function gcd(a: number, b: number): number {
 }
 
 //ts implementation of pythons itertools.combinations function
-
-export function* combinations<T>(
-    iterable: Iterable<T>,
-    k: number
-): Generator<T[], void, unknown> {
+export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[], void, unknown> {
     const items = [...iterable];
     const n = items.length
     if (k <= 0 || n < k) return;

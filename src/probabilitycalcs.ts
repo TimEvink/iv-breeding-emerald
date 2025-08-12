@@ -17,7 +17,6 @@ type IVinheritanceconfiguration = [
 type InheritedIVs = Map<number, number>;
 // for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 
-
 function* ivconfigurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
     for (let s1 = 0; s1 < 6; s1++) {
         for (const s2 of [1, 2, 3, 4, 5]) {
@@ -33,14 +32,6 @@ function* ivconfigurationGenerator(): Generator<IVinheritanceconfiguration, void
         }
     }
 }
-
-// function inheritedIVs(config: IVinheritanceconfiguration): InheritedIVs {
-//     return new Map(config);
-// }
-
-// for (const config of configurationGenerator()) {
-//     console.log(config, inheritedIvs(config));
-// }
 
 function isRandomGenerationRemainingIVsPossible(
     inheritedIVs: InheritedIVs,
@@ -79,13 +70,6 @@ function countTargetIVsInherited(
     }, 0);
 }
 
-// function gcd(a: number, b: number): number {
-//     while (b !== 0) {
-//         [a, b] = [b, a % b];
-//     }
-//     return a;
-// }
-
 function probability(
     parentAIVs: number[],
     parentBIVs: number[],
@@ -95,7 +79,8 @@ function probability(
     const n = targetIVs.length;
     const counts: number[] = Array(n + 1).fill(0);
     for (const config of ivconfigurationGenerator()) {
-        const inheritedIVs = new Map(config);
+        //the override mechanic of inherited stats gets handled automatically by using a map
+        const inheritedIVs: InheritedIVs = new Map(config);
         if (isRandomGenerationRemainingIVsPossible(inheritedIVs, parentAIVs, parentBIVs, targetIVs)) {
             counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
         }
@@ -103,15 +88,6 @@ function probability(
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
     const denominator = 960 * 32 ** n;
     const g = gcd(numerator, denominator);
-    if (verbose) {
-        console.log('Parent A IVs:', parentAIVs);
-        console.log('Parent B IVs:', parentBIVs);
-        console.log('Target IVs:', targetIVs);
-        for (let i = Math.min(n, 3); i >= 0; i--) {
-            console.log(`Number of configurations with ${i} inherited target IVs:`, counts[i]);
-        }
-        console.log(`Probability of obtaining target IVs: ${numerator / g}/${denominator / g} \u2248 1/${(denominator / numerator).toFixed(2)}`);
-    }
     return [numerator / g, denominator / g];
 }
 
@@ -123,7 +99,6 @@ function* configurationGenerator(
     const n = targetIVs.length;
     for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
         for (let j = n - missingIVsmax; j <= i; j++) {
-            console.log(i, j);
             const seen = new Set();
             for (const P of combinations<number>(targetIVs, i)) {
                 const Pstring = P.join('');
@@ -152,11 +127,3 @@ export function probabilityData(
     data.sort((a, b) => a[3] * b[2] - a[2] * b[3]); 
     return data;
 }
-
-// for (const [P, Q] of combinationsGenerator([0, 1, 2, 3], 1, 2)) {
-//     console.log(P, Q);
-// }
-
-// console.log(probability([0], [1], [0, 1]));
-// console.log(probability([0, 1], [0, 5], [0, 1, 5], true));
-
