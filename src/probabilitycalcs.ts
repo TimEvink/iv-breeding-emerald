@@ -2,11 +2,7 @@ import { gcd, combinations } from './utils.js'
 
 //stats are worked internally with by integers 0, 1, 2, 3, 4, 5, for respectively HP, Atk, Def, Sp.A, Sp.D and Spe.
 //also: 0 is used for parent A, 1 is used for parent B.
-type IVinheritanceconfiguration = [
-  [number, number],
-  [number, number],
-  [number, number]
-];
+
 // example: [[0, 0], [4, 1], [5, 0]] means in the inheritance process we have in order:
 // - HP is passed from parent A
 // - Sp.D is passed from parent B
@@ -14,8 +10,12 @@ type IVinheritanceconfiguration = [
 //
 // the order is important as newer steps can override previously inherited stats.
 
+type IVinheritanceconfiguration = [
+  [number, number],
+  [number, number],
+  [number, number]
+];
 type InheritedIVs = Map<number, number>;
-// for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 
 function* ivconfigurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
     for (let s1 = 0; s1 < 6; s1++) {
@@ -73,8 +73,7 @@ function countTargetIVsInherited(
 function probability(
     parentAIVs: number[],
     parentBIVs: number[],
-    targetIVs: number[],
-    verbose: boolean = false
+    targetIVs: number[]
 ): [number, number] {
     const n = targetIVs.length;
     const counts: number[] = Array(n + 1).fill(0);

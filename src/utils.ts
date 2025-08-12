@@ -9,10 +9,10 @@ export function gcd(a: number, b: number): number {
 //ts implementation of pythons itertools.combinations function
 export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[], void, unknown> {
     const items = [...iterable];
-    const n = items.length
+    const n = items.length;
     if (k <= 0 || n < k) return;
-    const indices = [...Array(k).keys()]
-    yield indices.map((i) => items[i])
+    const indices = [...Array(k).keys()];
+    yield indices.map((i) => items[i]);
     while (true) {
         let i = k - 1;
         while (i >= 0 && indices[i] === i + n - k) {

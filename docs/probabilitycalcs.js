@@ -1,5 +1,4 @@
 import { gcd, combinations } from './utils.js';
-// for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 function* ivconfigurationGenerator() {
     for (let s1 = 0; s1 < 6; s1++) {
         for (const s2 of [1, 2, 3, 4, 5]) {
@@ -42,7 +41,7 @@ function countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs
         return count;
     }, 0);
 }
-function probability(parentAIVs, parentBIVs, targetIVs, verbose = false) {
+function probability(parentAIVs, parentBIVs, targetIVs) {
     const n = targetIVs.length;
     const counts = Array(n + 1).fill(0);
     for (const config of ivconfigurationGenerator()) {

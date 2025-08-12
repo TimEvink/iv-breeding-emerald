@@ -1,14 +1,22 @@
-#target-ivs td {
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+td, th {
+  box-sizing: border-box;
+  width: 50px;       /* fixed column width */
+  text-align: center; /* optional */
+}
+
+td.toggleable {
   cursor: pointer;
-  padding: 8px;
-  border: 1px solid #ccc;
+  background-color: lightgray;
+  font-weight: normal;
+  border: 1px solid black;
 }
 
 td.toggleable.selected {
   background-color: lightgreen;
-  font-weight: bold;
-}
-
-#target-ivs-table {
-  text-align: center;
 }
