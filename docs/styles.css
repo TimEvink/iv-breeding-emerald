@@ -1,12 +1,14 @@
-/* Default look */
 #target-ivs td {
   cursor: pointer;
   padding: 8px;
   border: 1px solid #ccc;
 }
 
-/* Selected look */
-#target-ivs td.selected {
+td.toggleable.selected {
   background-color: lightgreen;
   font-weight: bold;
+}
+
+#target-ivs-table {
+  text-align: center;
 }

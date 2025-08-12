@@ -1,5 +1,4 @@
-import { gcd } from './utils.js'
-import { combinations } from './utils.js'
+import { gcd, combinations } from './utils.js'
 
 //stats are worked internally with by integers 0, 1, 2, 3, 4, 5, for respectively HP, Atk, Def, Sp.A, Sp.D and Spe.
 //also: 0 is used for parent A, 1 is used for parent B.
@@ -19,7 +18,7 @@ type InheritedIVs = Map<number, number>;
 // for the actual inherited IVs we also remember the parents which passed down the IV in the end, so we use a map, mapping the statindex to the corresponding parentindex.
 
 
-function* configurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
+function* ivconfigurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
     for (let s1 = 0; s1 < 6; s1++) {
         for (const s2 of [1, 2, 3, 4, 5]) {
             for (const s3 of [1, 3, 4, 5]) {
@@ -92,10 +91,10 @@ function probability(
     parentBIVs: number[],
     targetIVs: number[],
     verbose: boolean = false
-): [number, number, number] {
+): [number, number] {
     const n = targetIVs.length;
     const counts: number[] = Array(n + 1).fill(0);
-    for (const config of configurationGenerator()) {
+    for (const config of ivconfigurationGenerator()) {
         const inheritedIVs = new Map(config);
         if (isRandomGenerationRemainingIVsPossible(inheritedIVs, parentAIVs, parentBIVs, targetIVs)) {
             counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
@@ -113,13 +112,13 @@ function probability(
         }
         console.log(`Probability of obtaining target IVs: ${numerator / g}/${denominator / g} \u2248 1/${(denominator / numerator).toFixed(2)}`);
     }
-    return [numerator / g, denominator / g, denominator / numerator];
+    return [numerator / g, denominator / g];
 }
 
-function* combinationsGenerator(
+function* configurationGenerator(
     targetIVs: number[],
     missingIVsmin: number,
-    missingIVsmax: number,
+    missingIVsmax: number
 ): Generator<[number[], number[]]> {
     const n = targetIVs.length;
     for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
@@ -139,6 +138,20 @@ function* combinationsGenerator(
     }
 }
 
+//outputs all the relevant probabilitydata in an array with entries of the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
+export function probabilityData(
+    targetIVs: number[],
+    missingIVsmin: number = 1,
+    missingIVsmax: number = 1
+): [number[], number[], number, number][] {
+    const data: [number[], number[], number, number][] = [];
+    for (const [P, Q] of configurationGenerator(targetIVs, missingIVsmin, missingIVsmax)) {
+        const [n, d] = probability(P, Q, targetIVs);
+        data.push([P, Q, n, d]);
+    }
+    data.sort((a, b) => a[3] * b[2] - a[2] * b[3]); 
+    return data;
+}
 
 // for (const [P, Q] of combinationsGenerator([0, 1, 2, 3], 1, 2)) {
 //     console.log(P, Q);

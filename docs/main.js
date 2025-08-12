@@ -1,7 +1,44 @@
-"use strict";
-//so we need here quite a bit. maybe newfile?
-//trigger a computation on every click, so we need an eventhandler on clicks.
-//we also need some global variables used to manage state.
-//max depth:maximum number of missing IVs in the parents, defaults to 1.
-//we start with just recompute/readd everything to the DOM on every click. we can improve later if desired.
-// 
+import { probabilityData } from './probabilitycalcs.js';
+const stats = ['HP', 'Atk', 'Def', "SpA", "SpD", "Spe"];
+const tablebody = document.getElementById("tablebody");
+if (!tablebody)
+    throw new Error("No #tablebody found in DOM!");
+let targetIVs = [];
+document.getElementById("target-ivs-header-row").addEventListener("click", (event) => {
+    if (event.target instanceof HTMLTableCellElement) {
+        //remove previous rows.
+        tablebody.replaceChildren();
+        //toggle background color.
+        event.target.classList.toggle('selected');
+        //update targetIVs
+        const index = Number(event.target.dataset.stat);
+        if (targetIVs.includes(index)) {
+            targetIVs = targetIVs.filter((x) => x !== index);
+        }
+        else {
+            targetIVs.push(index);
+            targetIVs.sort((a, b) => a - b);
+        }
+        const probabilitydata = probabilityData(targetIVs);
+        //generate tablerows with the data.
+        for (const [parentAIVs, parentBIVs, numerator, denominator] of probabilitydata) {
+            //add a row for each parent
+            for (const parent of [parentAIVs, parentBIVs]) {
+                const tablerow = document.createElement("tr");
+                for (let i = 0; i < stats.length; i++) {
+                    const tabledata = document.createElement("td");
+                    tabledata.textContent = parent.includes(i) ? stats[i] : "";
+                    tablerow.appendChild(tabledata);
+                }
+                tablebody.appendChild(tablerow);
+            }
+            //add probability row
+            const probabilityrow = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 6;
+            cell.textContent = `Probability: 1/${(denominator / numerator).toFixed(2)}`;
+            probabilityrow.appendChild(cell);
+            tablebody.appendChild(probabilityrow);
+        }
+    }
+});
