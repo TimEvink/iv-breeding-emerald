@@ -7,7 +7,7 @@ interface State {
     options: ConfigurationOptions
 };
 
-//initial state, 
+//initial state, hardcoded to match default values of input fields.
 const state: State = {
     targetIVs: [],
     options: {
@@ -17,8 +17,6 @@ const state: State = {
         maxmissingBIVs: 1
     }
 };
-
-// (window as any).state = state;
 
 const stats: readonly string[] = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
 const tablecellwidth = 8;
@@ -34,7 +32,7 @@ function calculateAndRender(): void {
         const warningrow = document.createElement('tr');
         const cell = document.createElement('td');
         cell.colSpan = tablecellwidth;
-        cell.innerHTML = 'No results for current target IVs.<br> Toggle more stats or change settings.';
+        cell.innerHTML = 'No results for current target IVs.<br> Toggle more stats and/or change settings.';
         warningrow.appendChild(cell);
         tablebody.appendChild(warningrow);
         return;
@@ -63,13 +61,6 @@ function calculateAndRender(): void {
                 tablerow.appendChild(probabilitycell);
             }
         }
-        // const probabilityrow = document.createElement('tr');
-        // const cell = document.createElement('td');
-        // cell.colSpan = tablecellwidth;
-        // cell.classList.add('prob');
-        // cell.textContent = `Probability: 1/${(denominator / numerator).toFixed(2)}`;
-        // probabilityrow.appendChild(cell);
-        // tablebody.appendChild(probabilityrow);
     }
 }
 

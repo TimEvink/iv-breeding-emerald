@@ -1,6 +1,6 @@
 import { probabilityData } from './probabilitycalcs.js';
 ;
-//initial state, 
+//initial state, hardcoded to match default values of input fields.
 const state = {
     targetIVs: [],
     options: {
@@ -10,7 +10,6 @@ const state = {
         maxmissingBIVs: 1
     }
 };
-// (window as any).state = state;
 const stats = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
 const tablecellwidth = 8;
 const decimals = 2;
@@ -24,7 +23,7 @@ function calculateAndRender() {
         const warningrow = document.createElement('tr');
         const cell = document.createElement('td');
         cell.colSpan = tablecellwidth;
-        cell.innerHTML = 'No results for current target IVs.<br> Toggle more stats or change settings.';
+        cell.innerHTML = 'No results for current target IVs.<br> Toggle more stats and/or change settings.';
         warningrow.appendChild(cell);
         tablebody.appendChild(warningrow);
         return;
@@ -53,13 +52,6 @@ function calculateAndRender() {
                 tablerow.appendChild(probabilitycell);
             }
         }
-        // const probabilityrow = document.createElement('tr');
-        // const cell = document.createElement('td');
-        // cell.colSpan = tablecellwidth;
-        // cell.classList.add('prob');
-        // cell.textContent = `Probability: 1/${(denominator / numerator).toFixed(2)}`;
-        // probabilityrow.appendChild(cell);
-        // tablebody.appendChild(probabilityrow);
     }
 }
 document.getElementById('target-ivs-header-row').addEventListener('click', (event) => {
