@@ -1,13 +1,37 @@
-table {
+html {
+  scrollbar-gutter: stable;
+}
+
+#options-table {
+  margin: 10px auto;
+}
+
+#big-table {
   margin: 20px auto;
   border-collapse: collapse;
   table-layout: fixed;
 }
 
-td, th {
+#big-table td {
+  text-align: center;
+}
+
+td.middle-column {
   box-sizing: border-box;
   width: 50px;       /* fixed column width */
   text-align: center; /* optional */
+  border: 1px solid black;
+}
+
+td.left-column {
+  width: 60px;
+  text-align: left;
+}
+
+td.right-column {
+  width: 80px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 td.toggleable {
@@ -19,4 +43,8 @@ td.toggleable {
 
 td.toggleable.selected {
   background-color: lightgreen;
+}
+
+td.prob {
+  border-bottom: 1px solid black;;
 }

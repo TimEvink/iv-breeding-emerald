@@ -1,6 +1,7 @@
 import { gcd, combinations } from './utils.js'
+import { ConfigurationOptions } from './interfaces.js';
 
-//stats are worked internally with by integers 0, 1, 2, 3, 4, 5, for respectively HP, Atk, Def, Sp.A, Sp.D and Spe.
+//stats are worked internally with by integers: we use 0, 1, 2, 3, 4, 5 for HP, Atk, Def, Sp.A, Sp.D and Spe, respectively.
 //also: 0 is used for parent A, 1 is used for parent B.
 
 // example: [[0, 0], [4, 1], [5, 0]] means in the inheritance process we have in order:
@@ -84,6 +85,7 @@ function probability(
             counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
         }
     }
+    //counts[i] now equals the number of configurations where exactly i of the target IVs are inherited. Only configurations for which random generation can fix the result (if needed), are taken into account.
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
     const denominator = 960 * 32 ** n;
     const g = gcd(numerator, denominator);
@@ -92,12 +94,11 @@ function probability(
 
 function* configurationGenerator(
     targetIVs: number[],
-    missingIVsmin: number,
-    missingIVsmax: number
+    options: ConfigurationOptions
 ): Generator<[number[], number[]]> {
     const n = targetIVs.length;
-    for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
-        for (let j = n - missingIVsmax; j <= i; j++) {
+    for (let i = n - options.maxmissingAIVs; i <= n - options.minmissingAIVs; i++) {
+        for (let j = n - options.maxmissingBIVs; j <= n - options.minmissingBIVs; j++) {
             const seen = new Set();
             for (const P of combinations<number>(targetIVs, i)) {
                 const Pstring = P.join('');
@@ -113,13 +114,13 @@ function* configurationGenerator(
 }
 
 //outputs all the relevant probabilitydata in an array with entries of the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
+
 export function probabilityData(
     targetIVs: number[],
-    missingIVsmin: number = 1,
-    missingIVsmax: number = 1
+    options: ConfigurationOptions
 ): [number[], number[], number, number][] {
     const data: [number[], number[], number, number][] = [];
-    for (const [P, Q] of configurationGenerator(targetIVs, missingIVsmin, missingIVsmax)) {
+    for (const [P, Q] of configurationGenerator(targetIVs, options)) {
         const [n, d] = probability(P, Q, targetIVs);
         data.push([P, Q, n, d]);
     }

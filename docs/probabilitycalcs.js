@@ -51,15 +51,16 @@ function probability(parentAIVs, parentBIVs, targetIVs) {
             counts[countTargetIVsInherited(inheritedIVs, parentAIVs, parentBIVs, targetIVs)]++;
         }
     }
+    //counts[i] now equals the number of configurations where exactly i of the target IVs are inherited. Only configurations for which random generation can fix the result (if needed), are taken into account.
     const numerator = counts.reduce((acc, val, i) => acc + val * 32 ** i, 0);
     const denominator = 960 * 32 ** n;
     const g = gcd(numerator, denominator);
     return [numerator / g, denominator / g];
 }
-function* configurationGenerator(targetIVs, missingIVsmin, missingIVsmax) {
+function* configurationGenerator(targetIVs, options) {
     const n = targetIVs.length;
-    for (let i = n - missingIVsmax; i <= n - missingIVsmin; i++) {
-        for (let j = n - missingIVsmax; j <= i; j++) {
+    for (let i = n - options.maxmissingAIVs; i <= n - options.minmissingAIVs; i++) {
+        for (let j = n - options.maxmissingBIVs; j <= n - options.minmissingBIVs; j++) {
             const seen = new Set();
             for (const P of combinations(targetIVs, i)) {
                 const Pstring = P.join('');
@@ -75,9 +76,9 @@ function* configurationGenerator(targetIVs, missingIVsmin, missingIVsmax) {
     }
 }
 //outputs all the relevant probabilitydata in an array with entries of the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
-export function probabilityData(targetIVs, missingIVsmin = 1, missingIVsmax = 1) {
+export function probabilityData(targetIVs, options) {
     const data = [];
-    for (const [P, Q] of configurationGenerator(targetIVs, missingIVsmin, missingIVsmax)) {
+    for (const [P, Q] of configurationGenerator(targetIVs, options)) {
         const [n, d] = probability(P, Q, targetIVs);
         data.push([P, Q, n, d]);
     }

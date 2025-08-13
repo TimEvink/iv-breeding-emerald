@@ -8,29 +8,44 @@
 </head>
 <body>
   <h1>Welcome to the IV Breeding Tool</h1>
-  <!-- <table>
+  <table id="options-table">
+    <tbody id="options-body">
+      <tr>
+        <td></td>
+        <td style="text-align: center">min</td>
+        <td style="text-align: center">max</td>
+      </tr>
+      <tr>
+        <td>Parent A</td>
+        <td><input type="number" data-prop="minmissingAIVs" min="0" max="3" step="1" value="1"></td>
+        <td><input type="number" data-prop="maxmissingAIVs" min="0" max="3" step="1" value="1"></td>
+      </tr>
+      <tr>
+        <td>Parent B</td>
+        <td><input type="number" data-prop="minmissingBIVs" min="0" max="3" step="1" value="1"></td>
+        <td><input type="number" data-prop="maxmissingBIVs" min="0" max="3" step="1" value="1"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table id="big-table">
     <thead>
-      Target IVs: (click to toggle)
+      <tr id="target-ivs-header-row">
+        <td class="left-column"></td>
+        <td data-stat="0" class="toggleable middle-column">HP</td>
+        <td data-stat="1" class="toggleable middle-column">Atk</td>
+        <td data-stat="2" class="toggleable middle-column">Def</td>
+        <td data-stat="3" class="toggleable middle-column">Sp.A</td>
+        <td data-stat="4" class="toggleable middle-column">Sp.D</td>
+        <td data-stat="5" class="toggleable middle-column">Spe</td>
+        <td class="right-column">Probability</td>
+      </tr>
     </thead>
-    <tr>
-      <td scope="col">Target IVs</td><td>Hp</td><td>Atk</td><td>Def</td><td>Sp.A</td><td>Sp.D</td><td>Spe</td>
-    </tr>
-  </table> -->
-  <table id="target-ivs-table">
-  <thead>
-    <tr id="target-ivs-header-row">
-      <td data-stat="0" class="toggleable">HP</td>
-      <td data-stat="1" class="toggleable">Atk</td>
-      <td data-stat="2" class="toggleable">Def</td>
-      <td data-stat="3" class="toggleable">Sp.A</td>
-      <td data-stat="4" class="toggleable">Sp.D</td>
-      <td data-stat="5" class="toggleable">Spe</td>
-    </tr>
-  </thead>
-  <tbody id="tablebody">
-  </tbody>
-</table>
-
-<script type="module" src="main.js" defer></script>
+    <tbody id="tablebody">
+      <tr>
+        <td colspan="8">No results for current target IVs.<br> Toggle more stats or change settings.</td>
+      </tr>
+    </tbody>
+  </table>
+  <script type="module" src="main.js" defer></script>
 </body>
 </html>
