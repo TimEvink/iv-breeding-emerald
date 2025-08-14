@@ -10,6 +10,7 @@ export function gcd(a: number, b: number): number {
 export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[], void, unknown> {
     const items = [...iterable];
     const n = items.length;
+    if (k === 0) yield [];
     if (k <= 0 || n < k) return;
     const indices = [...Array(k).keys()];
     yield indices.map((i) => items[i]);

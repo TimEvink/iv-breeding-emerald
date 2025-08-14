@@ -4,10 +4,8 @@ import { probabilityData } from './probabilitycalcs.js';
 const state = {
     targetIVs: [],
     options: {
-        minmissingAIVs: 1,
-        maxmissingAIVs: 1,
-        minmissingBIVs: 1,
-        maxmissingBIVs: 1
+        missingAIVs: 1,
+        missingBIVs: 1
     }
 };
 const stats = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
@@ -75,7 +73,7 @@ document.getElementById('options-body').addEventListener('input', (event) => {
         //retrieve and sanitize value
         let value = Math.round(Number(event.target.value) || 0);
         value = Math.max(value, 0);
-        value = Math.min(value, 3);
+        value = Math.min(value, 6);
         event.target.value = value.toString();
         //update state
         state.options[event.target.dataset.prop] = value;

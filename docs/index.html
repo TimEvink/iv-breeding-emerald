@@ -12,26 +12,19 @@
     <caption>Number of missing IVs</caption>
     <tbody id="options-body">
       <tr>
-        <td></td>
-        <td style="text-align: center">min</td>
-        <td style="text-align: center">max</td>
+        <td>Parent A:</td>
+        <td><input type="number" data-prop="missingAIVs" min="0" max="5" step="1" value="1"></td>
       </tr>
       <tr>
-        <td>Parent A</td>
-        <td><input type="number" data-prop="minmissingAIVs" min="0" max="3" step="1" value="1"></td>
-        <td><input type="number" data-prop="maxmissingAIVs" min="0" max="3" step="1" value="1"></td>
-      </tr>
-      <tr>
-        <td>Parent B</td>
-        <td><input type="number" data-prop="minmissingBIVs" min="0" max="3" step="1" value="1"></td>
-        <td><input type="number" data-prop="maxmissingBIVs" min="0" max="3" step="1" value="1"></td>
+        <td>Parent B:</td>
+        <td><input type="number" data-prop="missingBIVs" min="0" max="5" step="1" value="1"></td>
       </tr>
     </tbody>
   </table>
   <table id="big-table">
     <thead>
       <tr id="target-ivs-header-row">
-        <td class="left-column"></td>
+        <td class="left-column">Target IVs:</td>
         <td data-stat="0" class="toggleable middle-column">HP</td>
         <td data-stat="1" class="toggleable middle-column">Atk</td>
         <td data-stat="2" class="toggleable middle-column">Def</td>

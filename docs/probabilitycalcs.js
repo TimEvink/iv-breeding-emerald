@@ -59,19 +59,15 @@ function probability(parentAIVs, parentBIVs, targetIVs) {
 }
 function* configurationGenerator(targetIVs, options) {
     const n = targetIVs.length;
-    for (let i = n - options.maxmissingAIVs; i <= n - options.minmissingAIVs; i++) {
-        for (let j = n - options.maxmissingBIVs; j <= n - options.minmissingBIVs; j++) {
-            const seen = new Set();
-            for (const P of combinations(targetIVs, i)) {
-                const Pstring = P.join('');
-                seen.add(Pstring);
-                for (const Q of combinations(targetIVs, j)) {
-                    const Qstring = Q.join('');
-                    if (seen.has(Qstring) && (Pstring !== Qstring))
-                        continue;
-                    yield [P, Q];
-                }
-            }
+    const seen = new Set();
+    for (const P of combinations(targetIVs, n - options.missingAIVs)) {
+        const Pstring = P.join('');
+        seen.add(Pstring);
+        for (const Q of combinations(targetIVs, n - options.missingBIVs)) {
+            const Qstring = Q.join('');
+            if (seen.has(Qstring) && (Pstring !== Qstring))
+                continue;
+            yield [P, Q];
         }
     }
 }

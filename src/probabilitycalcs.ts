@@ -97,18 +97,14 @@ function* configurationGenerator(
     options: ConfigurationOptions
 ): Generator<[number[], number[]]> {
     const n = targetIVs.length;
-    for (let i = n - options.maxmissingAIVs; i <= n - options.minmissingAIVs; i++) {
-        for (let j = n - options.maxmissingBIVs; j <= n - options.minmissingBIVs; j++) {
-            const seen = new Set();
-            for (const P of combinations<number>(targetIVs, i)) {
-                const Pstring = P.join('');
-                seen.add(Pstring);
-                for (const Q of combinations<number>(targetIVs, j)) {
-                    const Qstring = Q.join('');
-                    if (seen.has(Qstring) && (Pstring !== Qstring)) continue;
-                    yield [P, Q];
-                }
-            }
+    const seen = new Set();
+    for (const P of combinations<number>(targetIVs, n - options.missingAIVs)) {
+        const Pstring = P.join('');
+        seen.add(Pstring);
+        for (const Q of combinations<number>(targetIVs, n - options.missingBIVs)) {
+            const Qstring = Q.join('');
+            if (seen.has(Qstring) && (Pstring !== Qstring)) continue;
+            yield [P, Q];
         }
     }
 }

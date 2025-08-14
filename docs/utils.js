@@ -9,6 +9,8 @@ export function gcd(a, b) {
 export function* combinations(iterable, k) {
     const items = [...iterable];
     const n = items.length;
+    if (k === 0)
+        yield [];
     if (k <= 0 || n < k)
         return;
     const indices = [...Array(k).keys()];
