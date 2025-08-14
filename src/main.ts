@@ -30,7 +30,7 @@ function calculateAndRender(): void {
         const warningrow = document.createElement('tr');
         const cell = document.createElement('td');
         cell.colSpan = tablecellwidth;
-        cell.innerHTML = 'No results for current target IVs.<br> Toggle more stats and/or change settings.';
+        cell.innerHTML = '<br>No results for current target IVs.<br> Toggle more stats and/or change settings.';
         warningrow.appendChild(cell);
         tablebody.appendChild(warningrow);
         return;
@@ -53,7 +53,7 @@ function calculateAndRender(): void {
             //add probabilitycell
             if (parent === parentAIVs) {
                 const probabilitycell = document.createElement('td');
-                probabilitycell.colSpan = 2;
+                probabilitycell.rowSpan = 2;
                 probabilitycell.classList.add('right-column');
                 probabilitycell.textContent = `1/${(denominator / numerator).toFixed(decimals)}`;
                 tablerow.appendChild(probabilitycell);
@@ -83,7 +83,7 @@ document.getElementById('options-body')!.addEventListener('input', (event) => {
         //retrieve and sanitize value
         let value = Math.round(Number(event.target.value) || 0);
         value = Math.max(value, 0);
-        value = Math.min(value, 5);
+        value = Math.min(value, 3);
         event.target.value = value.toString();
         //update state
         state.options[event.target.dataset.prop! as keyof ConfigurationOptions] = value;
