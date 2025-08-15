@@ -2,36 +2,57 @@ html {
   scrollbar-gutter: stable;
 }
 
-#options-table {
-  margin: 10px auto;
+.hidden {
+  display: none;
 }
 
-#big-table {
+/* #parent-ivs-data tr td {
+    background-color: #f9f9f9;
+} */
+/* 
+#parent-ivs-data tr:nth-child(4n+1),
+#parent-ivs-data tr:nth-child(4n+2)
+{
+  background-color: #f0f0f0;
+} */
+
+#parent-ivs-data tr:nth-child(4n+3),
+#parent-ivs-data tr:nth-child(4n+4)
+{
+  background-color: #f3f3f3;
+}
+
+/* #parent-ivs-data tr:nth-child(2n+1),
+#parent-ivs-data tr:nth-child(2n+2) {
+  background-color: #ffffff;
+} */
+
+table.options-table {
+  margin: 4px auto;
+}
+
+.center-table {
   margin: 20px auto;
   border-collapse: collapse;
   table-layout: fixed;
 }
 
-#big-table td {
+.centre-table.td {
   text-align: center;
 }
 
-td.middle-column {
-  box-sizing: border-box;
-  width: 50px;       /* fixed column width */
-  text-align: center; /* optional */
+td, th {
+  text-align: center;
+  height: 15px;
+}
+
+td:not(.exclude-border),
+th:not(.exclude-border) {
   border: 1px solid black;
 }
 
-td.left-column {
-  width: 80px;
-  text-align: left;
-}
-
-td.right-column {
-  width: 80px;
+.options-table-container {
   text-align: center;
-  vertical-align: middle;
 }
 
 td.toggleable {
@@ -47,4 +68,9 @@ td.toggleable.selected {
 
 td.prob {
   border-bottom: 1px solid black;;
+}
+
+#parent-ivs-header th{
+  background-color: lightgray;
+  font-weight: normal;
 }
