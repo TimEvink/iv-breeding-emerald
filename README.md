@@ -1,10 +1,10 @@
-# iv-breeding-emerald
+# IV breeding in Pokémon Emerald.
 
-A tool for listing possible parent IV configurations given a set of target IV's for breeding in pokémon Emerald.
+This is a tool for listing possible parent IV configurations given a set of target IV's for breeding in Pokémon Emerald.
 
-found at https://timevink.github.io/iv-breeding-emerald/
+Found at https://timevink.github.io/iv-breeding-emerald/
 
-## usage notes
+## Usage notes
 
 You can toggle the table elements under 'Select target stats'. You will then see the possible configurations for sets of parent stats that can pass down their stats to a bred Pokémon with the target stats ordered by Probability.
 
@@ -17,11 +17,11 @@ B: Atk, Spe
 
 thus assumes that you work with parent A having 31 IVs in Hp and Atk, and parent B having 31 IVs in Atk and Spe. In that case the stated probability is the probability of hatching a Pokémon with 31 IVs in Hp, Atk and Spe coming from this parent pair.
 
-## hidden power
+## Hidden power
 
 As mentioned above, the calculations work with any particular IV value in mind for every stat. If say you want some stat at 30 IVs, thats completely fine as long as every occurance of that stat in the parent stats has 30 IVs.
 
-## justification of probability calculations
+## Probability calculations
 
 The IV inheritance in Pokémon Emerald works by following consecutive steps:
 1. The IVs of a random stat from a random Parent is passed down.
