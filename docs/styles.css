@@ -7,11 +7,18 @@ body {
   margin: 0;
 }
 
+main {
+  flex: 1; /* takes up any leftover vertical space */
+}
+
 .body-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem); /* full height */
   max-width: 650px;
   margin: 0 auto;
   padding: 1rem;
-  text-align: center;  /* makes header + options centered */
+  text-align: center;
 }
 
 .hidden {

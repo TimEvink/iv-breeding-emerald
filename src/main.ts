@@ -7,9 +7,7 @@ interface State {
     options: ConfigurationOptions
 };
 
-
 //initial state, hardcoded to match default values of input fields.
-
 const state: State = {
     targetIVs: [],
     options: {
