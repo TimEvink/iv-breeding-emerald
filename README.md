@@ -45,7 +45,7 @@ The probability calculation works by brute forcing over all these 960 configurat
 If such an issue does not happen, i.e. its possible for step 4 to (if needed) make the particular inheritance configuration end up in the desired target IVs, then the chance of that particular configuration ending up with the target IVs is equal to 1/32^k, where k is the number of target stats that did not get passed down. We thus end up with a total probability of
 
 $$
-\sum_c \left( \frac{1}{960} \cdot \frac{1}{32^{k_c}} \right)
+\frac{1}{960}\sum_c \frac{1}{32^{k_c}}
 $$
 
 with the sum running over all configurations $$c$$ for which random generation of remaining IVs can still result in obtaining all target stats with desired IVs, and $$k_c$$ equals the number of target stats that where not passed down by configuration $$c$$.
@@ -55,13 +55,13 @@ with the sum running over all configurations $$c$$ for which random generation o
 This project is written in TypeScript and plain HTML/CSS.
 The compiled JavaScript lives in `/docs`, alongside the HTML and CSS, which is what GitHub Pages serves.
 
-To build locally you'll need Node and Typescript installed and clone the repo. From the project root:
+To build locally you'll need Typescript installed and clone the repo. From the project root:
 
 ```bash
 tsc
 ```
 
-will generate the correct .js files inside `/docs`. Running for example from the project root:
+will generate the correct .js files inside `/docs`. Running for example (with Node installed) from the project root:
 
 ```bash
 npx serve docs
