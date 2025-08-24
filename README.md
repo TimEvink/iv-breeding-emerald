@@ -1,36 +1,73 @@
-# IV breeding in Pokémon Emerald.
+# IV breeding in Pokémon Emerald
 
-This is a tool for listing possible parent IV configurations given a set of target IV's for breeding in Pokémon Emerald.
+This is a tool for listing possible parent IV configurations given a set of target IVs for breeding in Pokémon Emerald.
 
-Found at https://timevink.github.io/iv-breeding-emerald/
+Found at https://timevink.github.io/iv-breeding-emerald.
 
-## Usage notes
+## Usage
 
-You can toggle the table elements under 'Select target stats'. You will then see the possible configurations for sets of parent stats that can pass down their stats to a bred Pokémon with the target stats ordered by Probability.
+1. Select target stats by clicking the table headers.
+2. Adjust the number of missing target stats for each parent (default: 1).
+3. View possible parent stat configurations with probabilities.
 
-The probability calculation assumes you have a particular IV value for each selected stat in mind, which will most likely be 31. It then assumes that every such stat, when present at some parent, has that same IV value in the Parent.
 
-Example: say with Missing stats settings of 1 for both parents (the default), you have selected Hp, Atk and Spe, and you intend to have these stats at 31 IVs. The first result, namely
 
-A: Hp, Atk
-B: Atk, Spe
+## Example
 
-thus assumes that you work with parent A having 31 IVs in Hp and Atk, and parent B having 31 IVs in Atk and Spe. In that case the stated probability is the probability of hatching a Pokémon with 31 IVs in Hp, Atk and Spe coming from this parent pair.
+Say you have selected Hp, Atk and Spe, and you intend to have these stats at 31 IVs. The first result, namely
 
-## Hidden power
+- parent A: Hp, Atk
+- parent B: Atk, Spe
 
-As mentioned above, the calculations work with any particular IV value in mind for every stat. If say you want some stat at 30 IVs, thats completely fine as long as every occurance of that stat in the parent stats has 30 IVs.
+thus assumes that you work with parent A having 31 IVs in Hp and Atk, and parent B having 31 IVs in Atk and Spe. The corresponding probability is then the probability of hatching a Pokémon with 31 IVs in Hp, Atk and Spe coming from this parent pair.
+
+Now say you want to breed a Beldum with 31 IVs in 4 stats from a Beldum with 31 IVs in 3 of the 4 stats and a ditto with 31 IVs in 2 of the 4. You'd set the number of missing stat options to 1 and 2 (or 2 and 1), respectively, since in that setup the Beldum parent will have 1 missing stat (4 - 3 = 1), while the Ditto will have 2 missing stats (4 - 2 = 2). 
+
+## Notes
+
+The probability calculation assumes you have a particular IV value for each selected stat in mind, which will likely be 31. It then assumes that every such stat, when present at some parent, has that same IV value in the parent. This also means that if for example you want some stat at 30 IVs for Hidden Power reasons, then the calculations are still valid as long as *every* occurrence of that stat in the parent stats has 30 IVs.
 
 ## Probability calculations
 
+The probability calculations are performed by the function probability in src/probabilitycalcs.ts. In this section an explanation is given on why this function actually ends up with the correct probabilities.
+
 The IV inheritance in Pokémon Emerald works by following consecutive steps:
-1. The IVs of a random stat from a random Parent is passed down.
-2. The IVs of a random stat that is not Hp from a random Parent is passed down.
-3. The IVs of a random stat that is not Hp or Def from a random Parent is passed down.
+
+1. choose 1 random stat from a random parent → 12 options
+2. choose 1 random stat (not HP) from a random parent → 10 options
+3. choose 1 random stat (not HP or Def) from a random parent → 8 options
+
+this gives in total:  12 × 10 × 8 = **960 possibilities** for IV inheritance configurations.
+
 4. The IVs of the stats that were not passed down in steps 1-3, are randomly generated.
 
-Note that steps 2 and 3 can override previous steps. For step 1 there are 12 options (6 stats, 2 parents), while step 2 has 10 options, and step 3 has 8 options. This gives in total 12 * 10 * 8 = 960 possibilities for Steps 1, 2 and 3, and each has a 1/960 chance of occuring.
+The probability calculation works by brute forcing over all these 960 configurations, and checking per configuration first if its still possible for step 4 to 'fix' the non-inherited stats. An example is best to illustrate this: say Atk is a target stat (assuming 31 IVs), parent A has 31 Atk IVs, but parent B has Atk IVs not equal to 31. If parent B ends up passing down Atk, its impossible for the random generation of remaining IVs (step 4) to end up with all desired target IVs since Atk is an inherited stat and thus gets no 'reroll'.
+If such an issue does not happen, i.e. its possible for step 4 to (if needed) make the particular inheritance configuration end up in the desired target IVs, then the chance of that particular configuration ending up with the target IVs is equal to 1/32^k, where k is the number of target stats that did not get passed down. We thus end up with a total probability of
 
-The probability calculation works by brute forcing over all these 960 configurations, and checking per configuration first if its still possible for Step 4 to 'fix' the non-inherited IVs. An example is best to illustrate this: if say a Atk is a target stat (assuming 31 IVs), and if parent B for a configuration has Atk IVs not equal to 31, then if parent B ends up passing down Atk, its impossible for the random generation of remaining IVs (step 4) to end up with all desired target IVs since Atk is an inherited stat and thus gets no 'reroll'.
+$$
+\sum_c \left( \frac{1}{960} \cdot \frac{1}{32^{k_c}} \right)
+$$
 
-However when this issue does not occur, meaning its possible for Step 4 to (if needed) make the particular inheritance configuration end up in the desired target IVs, then the chance of that particular configuration ending up with the target IVs is equal to 1/960, multiplied by 1/32^k, where k is the number of target IVs that did not get passed down. The total probability is thus obtained by taking the sum of these (1/960) * (1/32^k) for all configurations for which random generation of remaining IVs can still result in obtaining all target IVs. The probability function of the probabilitycalcs.ts file does exactly that.
+with the sum running over all configurations $$c$$ for which random generation of remaining IVs can still result in obtaining all target stats with desired IVs, and $$k_c$$ equals the number of target stats that where not passed down by configuration $$c$$.
+
+## Development
+
+This project is written in TypeScript and plain HTML/CSS.
+The compiled JavaScript lives in `/docs`, alongside the HTML and CSS, which is what GitHub Pages serves.
+
+To build locally you'll need Node and Typescript installed and clone the repo. From the project root:
+
+```bash
+tsc
+```
+
+will generate the correct .js files inside `/docs`. Running for example from the project root:
+
+```bash
+npx serve docs
+```
+
+will serve the page locally.
+
+There are zero external dependencies, so no need for npm install.
+
