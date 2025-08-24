@@ -57,7 +57,8 @@ function probability(parentAIVs, parentBIVs, targetIVs) {
     const g = gcd(numerator, denominator);
     return [numerator / g, denominator / g];
 }
-function* configurationGenerator(targetIVs, options) {
+//generates the relevant probabilitydata in the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
+function* probabilityDataGenerator(targetIVs, options) {
     const n = targetIVs.length;
     const seen = new Set();
     for (const P of combinations(targetIVs, n - options.missingAIVs)) {
@@ -65,19 +66,15 @@ function* configurationGenerator(targetIVs, options) {
         seen.add(Pstring);
         for (const Q of combinations(targetIVs, n - options.missingBIVs)) {
             const Qstring = Q.join('');
-            if (seen.has(Qstring) && (Pstring !== Qstring))
+            if (seen.has(Qstring) && (Pstring !== Qstring)) {
                 continue;
-            yield [P, Q];
+            }
+            yield [P, Q, ...probability(P, Q, targetIVs)];
         }
     }
 }
-//outputs all the relevant probabilitydata in an array with entries of the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
 export function probabilityData(targetIVs, options) {
-    const data = [];
-    for (const [P, Q] of configurationGenerator(targetIVs, options)) {
-        const [n, d] = probability(P, Q, targetIVs);
-        data.push([P, Q, n, d]);
-    }
+    const data = [...probabilityDataGenerator(targetIVs, options)];
     data.sort((a, b) => a[3] * b[2] - a[2] * b[3]);
     return data;
 }

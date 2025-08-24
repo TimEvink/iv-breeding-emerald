@@ -7,7 +7,9 @@ interface State {
     options: ConfigurationOptions
 };
 
+
 //initial state, hardcoded to match default values of input fields.
+
 const state: State = {
     targetIVs: [],
     options: {
@@ -17,8 +19,6 @@ const state: State = {
 };
 
 const stats: readonly string[] = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
-const tablecellwidth = 8;
-const decimals = 2;
 const tablebody = document.getElementById('parent-ivs-data')!;
 
 //fetches probability data and constructs the relevant tables.
@@ -41,14 +41,13 @@ function calculateAndRender(): void {
             for (let i = 0; i < stats.length; i++) {
                 const tabledata = document.createElement('td');
                 tabledata.textContent = parent.includes(i) ? stats[i] : '';
-                // tabledata.classList.add('middle-column');
                 tablerow.appendChild(tabledata);
             }
             //add probabilitycell
             if (parent === parentAIVs) {
                 const probabilitycell = document.createElement('td');
                 probabilitycell.rowSpan = 2;
-                probabilitycell.textContent = `1/${(denominator / numerator).toFixed(decimals)}`;
+                probabilitycell.textContent = `1/${(denominator / numerator).toFixed(2)}`;
                 tablerow.appendChild(probabilitycell);
             }
             tablebody.appendChild(tablerow);
@@ -58,7 +57,6 @@ function calculateAndRender(): void {
 
 document.getElementById('target-ivs-header-row')!.addEventListener('click', (event) => {
     if (event.target instanceof HTMLTableCellElement && 'stat' in event.target.dataset) {
-        //toggle background color.
         event.target.classList.toggle('selected');
         //update targetIVs
         const index = Number(event.target.dataset.stat);
