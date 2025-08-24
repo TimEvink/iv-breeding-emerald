@@ -4,69 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css">
-  <title>My IV Breeding Tool</title>
+  <title>Pokémon Emerald IV breeding tool</title>
 </head>
 <body>
-  <h1>IV breeding tool for Pokémon Emerald</h1>
-  <span>This tool allows you to see the various configurations for parent IVs when breeding in Pokémon Emerald for any set of target IVs. Probabilities are also provided.</span>
-  <div class="options-table-container">
-    <span><br>Number of missing IVs:</span>
-    <table class="options-table">
-      <tbody id="options-body">
-        <tr>
-          <td class="exclude-border">Parent A:</td>
-          <td class="exclude-border"><input type="number" data-prop="missingAIVs" min="0" max="3" step="1" value="1"></td>
+  <div class="body-wrapper">
+    <h1>Pokémon Emerald IV breeding tool</h1>
+    <p>This tool allows you to see the various probabilities for configurations of parent IVs when breeding in Pokémon Emerald for any set of target IVs.</p>
+    <div class="options-table-container">
+      <span><br>Number of missing IVs:</span>
+      <table class="options-table">
+        <tbody id="options-body">
+          <tr>
+            <td class="exclude-border">Parent A:</td>
+            <td class="exclude-border"><input type="number" data-prop="missingAIVs" min="0" max="3" step="1" value="1"></td>
+          </tr>
+          <tr>
+            <td class="exclude-border">Parent B:</td>
+            <td class="exclude-border"><input type="number" data-prop="missingBIVs" min="0" max="3" step="1" value="1"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <table class="center-table exclude-border">
+      <caption>
+        Select target IVs:
+      </caption>
+      <colgroup>
+        <col style="width:50px">  <!-- left-column -->
+        <col style="width:55px">  <!-- HP -->
+        <col style="width:55px">  <!-- Atk -->
+        <col style="width:55px">  <!-- Def -->
+        <col style="width:55px">  <!-- SpA -->
+        <col style="width:55px">  <!-- SpD -->
+        <col style="width:55px">  <!-- Spe -->
+        <col style="width:80px; vertical-align: middle">  <!-- Probability -->
+      </colgroup>
+      <tbody>
+        <tr id="target-ivs-header-row">
+          <td class="left-column exclude-border"></td>
+          <td data-stat="0" class="toggleable middle-column">HP</td>
+          <td data-stat="1" class="toggleable middle-column">Atk</td>
+          <td data-stat="2" class="toggleable middle-column">Def</td>
+          <td data-stat="3" class="toggleable middle-column">SpA</td>
+          <td data-stat="4" class="toggleable middle-column">SpD</td>
+          <td data-stat="5" class="toggleable middle-column">Spe</td>
+          <td class="right-column exclude-border"></td>
         </tr>
         <tr>
-          <td class="exclude-border">Parent B:</td>
-          <td class="exclude-border"><input type="number" data-prop="missingBIVs" min="0" max="3" step="1" value="1"></td>
+          <td colspan="8" class="exclude-border" style="height: 15px;"></td>
         </tr>
       </tbody>
+      <tbody>
+        <tr id="parent-ivs-header">
+          <th class="left-column">Parent</th>
+          <th colspan="6" class="middle-column"> Parent IVs</th>
+          <th class="right-column">Probability</th>
+        </tr>
+        <tr id="noresultplaceholder">
+          <td class="left-column exclude-border"></td>
+          <td colspan="6" class="middle-column exclude-border">No results for current target IVs. <br> Toggle more stats or change settings.</td>
+          <td class="right-column exclude-border"></td>
+        </tr>
+      </tbody>
+      <tbody id="parent-ivs-data"></tbody>
     </table>
+    <footer>
+      Made by Tim, source code found <a href="https://github.com/timevink/iv-breeding-emerald" target="_blank">here</a>. Includes extra clarification in the readme.
+    </footer>
   </div>
-  <table class="center-table exclude-border">
-    <caption>
-      Select target IVs:
-    </caption>
-    <colgroup>
-      <col style="width:50px">  <!-- left-column -->
-      <col style="width:55px">  <!-- HP -->
-      <col style="width:55px">  <!-- Atk -->
-      <col style="width:55px">  <!-- Def -->
-      <col style="width:55px">  <!-- SpA -->
-      <col style="width:55px">  <!-- SpD -->
-      <col style="width:55px">  <!-- Spe -->
-      <col style="width:80px; vertical-align: middle">  <!-- Probability -->
-    </colgroup>
-    <tbody>
-      <tr id="target-ivs-header-row">
-        <td class="left-column exclude-border"></td>
-        <td data-stat="0" class="toggleable middle-column">HP</td>
-        <td data-stat="1" class="toggleable middle-column">Atk</td>
-        <td data-stat="2" class="toggleable middle-column">Def</td>
-        <td data-stat="3" class="toggleable middle-column">SpA</td>
-        <td data-stat="4" class="toggleable middle-column">SpD</td>
-        <td data-stat="5" class="toggleable middle-column">Spe</td>
-        <td class="right-column exclude-border"></td>
-      </tr>
-      <tr>
-        <td colspan="8" class="exclude-border" style="height: 15px;"></td>
-      </tr>
-    </tbody>
-    <tbody>
-      <tr id="parent-ivs-header">
-        <th class="left-column">Parent</th>
-        <th colspan="6" class="middle-column"> Parent IVs</th>
-        <th class="right-column">Probability</th>
-      </tr>
-      <tr id="noresultplaceholder">
-        <td class="left-column exclude-border"></td>
-        <td colspan="6" class="middle-column exclude-border">No results for current target IVs. <br> Toggle more stats or change settings.</td>
-        <td class="right-column exclude-border"></td>
-      </tr>
-    </tbody>
-    <tbody id="parent-ivs-data"></tbody>
-  </table>
   <script type="module" src="main.js" defer></script>
 </body>
 </html>

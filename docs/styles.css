@@ -2,30 +2,31 @@ html {
   scrollbar-gutter: stable;
 }
 
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.body-wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;  /* makes header + options centered */
+}
+
 .hidden {
   display: none;
 }
 
-/* #parent-ivs-data tr td {
-    background-color: #f9f9f9;
-} */
-/* 
-#parent-ivs-data tr:nth-child(4n+1),
-#parent-ivs-data tr:nth-child(4n+2)
-{
-  background-color: #f0f0f0;
-} */
+#options-table-container {
+  margin-bottom: 1rem;
+}
 
 #parent-ivs-data tr:nth-child(4n+3),
 #parent-ivs-data tr:nth-child(4n+4)
 {
   background-color: #f3f3f3;
 }
-
-/* #parent-ivs-data tr:nth-child(2n+1),
-#parent-ivs-data tr:nth-child(2n+2) {
-  background-color: #ffffff;
-} */
 
 table.options-table {
   margin: 4px auto;
