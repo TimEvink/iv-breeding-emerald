@@ -10,9 +10,11 @@ Found at https://timevink.github.io/iv-breeding-emerald.
 2. Adjust the number of missing target stats for each parent (default: 1).
 3. View possible parent stat configurations with probabilities.
 
+## Notes
 
+The probability calculation assumes you have a particular IV value for each selected stat in mind, which will likely be 31. It then assumes that every such stat, when present at some parent, has that same IV value for the parent. This also means that if for example you want some stat at 30 IVs for Hidden Power reasons, then the calculations are still valid as long as *every* occurrence of that stat in the parent stats has 30 IVs.
 
-## Example
+## Examples
 
 Say you have selected Hp, Atk and Spe, and you intend to have these stats at 31 IVs. The first result, namely
 
@@ -21,15 +23,16 @@ Say you have selected Hp, Atk and Spe, and you intend to have these stats at 31 
 
 thus assumes that you work with parent A having 31 IVs in Hp and Atk, and parent B having 31 IVs in Atk and Spe. The corresponding probability is then the probability of hatching a Pokémon with 31 IVs in Hp, Atk and Spe coming from this parent pair.
 
-Now say you want to breed a Beldum with 31 IVs in 4 stats from a Beldum with 31 IVs in 3 of the 4 stats and a ditto with 31 IVs in 2 of the 4. You'd set the number of missing stat options to 1 and 2 (or 2 and 1), respectively, since in that setup the Beldum parent will have 1 missing stat (4 - 3 = 1), while the Ditto will have 2 missing stats (4 - 2 = 2). 
+Now say you want to breed a Beldum with 31 IVs in 4 stats from:
 
-## Notes
+- Parent A: a Beldum with 31 IVs in 3 of the 4.
+- Parent B: a Ditto with 31 IVs in 2 of the 4.
 
-The probability calculation assumes you have a particular IV value for each selected stat in mind, which will likely be 31. It then assumes that every such stat, when present at some parent, has that same IV value in the parent. This also means that if for example you want some stat at 30 IVs for Hidden Power reasons, then the calculations are still valid as long as *every* occurrence of that stat in the parent stats has 30 IVs.
+You'd then set the number of missing stat options to 1 for parent A, and 2 for parent B, since in that setup parent A will have $$1 = 4 - 3$$ missing stat, while parent B will have $$2 = 4 - 2$$ missing stats. 
 
 ## Probability calculations
 
-The probability calculations are performed by the function probability in src/probabilitycalcs.ts. In this section an explanation is given on why this function actually ends up with the correct probabilities.
+The probability calculations are performed by the function ```probability``` in ```src/probabilitycalcs.ts```. In this section an explanation is given on why this function actually ends up with the correct probabilities.
 
 The IV inheritance in Pokémon Emerald works by following consecutive steps:
 
@@ -69,5 +72,4 @@ npx serve docs
 
 will serve the page locally.
 
-There are zero external dependencies, so no need for npm install.
-
+There are no external dependencies.
