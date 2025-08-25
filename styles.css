@@ -1,0 +1,84 @@
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+main {
+  flex: 1; /* takes up any leftover vertical space */
+}
+
+.body-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem); /* full height */
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+#options-table-container {
+  margin-bottom: 1rem;
+}
+
+#parent-ivs-data tr:nth-child(4n+3),
+#parent-ivs-data tr:nth-child(4n+4)
+{
+  background-color: #f3f3f3;
+}
+
+table.options-table {
+  margin: 4px auto;
+}
+
+.center-table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.centre-table.td {
+  text-align: center;
+}
+
+td, th {
+  text-align: center;
+  height: 15px;
+}
+
+td:not(.exclude-border),
+th:not(.exclude-border) {
+  border: 1px solid black;
+}
+
+.options-table-container {
+  text-align: center;
+}
+
+td.toggleable {
+  cursor: pointer;
+  background-color: lightgray;
+  font-weight: normal;
+  border: 1px solid black;
+}
+
+td.toggleable.selected {
+  background-color: lightgreen;
+}
+
+td.prob {
+  border-bottom: 1px solid black;;
+}
+
+#parent-ivs-header th{
+  background-color: lightgray;
+  font-weight: normal;
+}
