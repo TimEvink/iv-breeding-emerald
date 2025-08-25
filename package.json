@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && npx http-server docs/app -p 3000",
-    "test": "node ./docs/tests/tests_entry.js"
+    "start": "tsc && npx http-server docs/app -p 3000",
+    "test": "tsc && node ./docs/tests/tests_entry.js"
   },
   "devDependencies": {
     "typescript": "5.6.3",
