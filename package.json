@@ -1,0 +1,17 @@
+{
+  "name": "iv-breeding-emerald",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && npx http-server docs/app -p 3000",
+    "test": "node ./docs/tests/tests_entry.js"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "http-server": "14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
