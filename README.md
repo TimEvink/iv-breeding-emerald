@@ -55,21 +55,41 @@ with the sum running over all configurations $$c$$ for which random generation o
 
 ## Development
 
-This project is written in TypeScript and plain HTML/CSS.
-The compiled JavaScript lives in `/docs`, alongside the HTML and CSS, which is what GitHub Pages serves.
+This project is written in TypeScript and plain HTML/CSS. The project structure is as follows.
 
-To build locally you'll need Typescript installed and clone the repo. From the project root:
+```markdown
+iv-breeding-emerald/
+├── src/
+│ ├── app/ --> .ts source code
+│ └── tests/ --> .ts tests
+├── docs/ --> ts build outout
+│ ├── app/ --> compiled app, gets served by gh-pages.
+│ │ ├── *.js --> from src/app
+│ │ ├── index.html --> manually placed
+│ │ └── styles.css --> manually placed
+│ └── tests/ --> compiled tests
+⋮
+```
 
+To build locally you'll need Node installed and clone the repo. Running from the project root
+
+```bash
+npm i
+```
+will install ```typescript``` and ```http-server``` locally inside the project as dev dependencies; there are no dependencies for the served files.
+
+To compile the typescript you can run either
+```bash
+npm run build
+```
+or just
 ```bash
 tsc
 ```
 
-will generate the correct .js files inside `/docs`. Running for example (with Node installed) from the project root:
+This will will compile the .ts files from ```src/``` to .js files in ```docs/```, including the tests. For local serving you can run
 
 ```bash
-npx serve docs
+npm start
 ```
-
-will serve the page locally.
-
-There are no external dependencies.
+which will serve the page from docs/app/ using ```http-server```.
