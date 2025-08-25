@@ -87,7 +87,7 @@ or just
 tsc
 ```
 
-This will will compile the .ts files from ```src/``` to .js files in ```docs/```, including the tests. For local serving you can run
+This will compile the .ts files from ```src/``` to .js files in ```docs/```, including the tests. For local serving you can run
 
 ```bash
 npm start
