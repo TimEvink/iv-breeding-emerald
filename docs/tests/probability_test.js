@@ -1,6 +1,6 @@
 // @ts-ignore
 import assert from "assert";
-import { ivconfigurationGenerator, isRandomGenerationRemainingIVsPossible, probability } from '../app/probabilitycalcs.js';
+import { ivconfigurationGenerator, isRandomGenerationRemainingIVsPossible, countTargetIVsInherited, probability } from '../app/probabilitycalcs.js';
 function ivconfigurationGenerator_test() {
     assert.deepStrictEqual([...ivconfigurationGenerator()].length, 960);
 }
@@ -8,6 +8,11 @@ function isRandomGenerationRemainingIVsPossible_test() {
     assert.deepStrictEqual(isRandomGenerationRemainingIVsPossible(new Map([[0, 1], [1, 0], [4, 1]]), [0, 4], [1, 4], [0, 1, 4]), false);
     assert.deepStrictEqual(isRandomGenerationRemainingIVsPossible(new Map([[0, 1], [1, 0], [4, 1]]), [1, 4], [0, 4], [0, 1, 4]), true);
     assert.deepStrictEqual(isRandomGenerationRemainingIVsPossible(new Map([[0, 1], [1, 0], [3, 1]]), [1, 4], [0, 4], [0, 1, 4]), true);
+}
+function countTargetIVsInherited_test() {
+    assert.strictEqual(countTargetIVsInherited(new Map([[0, 0], [3, 1], [5, 0]]), [0, 4], [2], [0, 3, 4]), 1);
+    assert.strictEqual(countTargetIVsInherited(new Map([[0, 1], [3, 1], [5, 0]]), [0, 4], [5], [0, 3, 4]), 0);
+    assert.strictEqual(countTargetIVsInherited(new Map([[0, 0], [1, 1], [5, 1]]), [0, 1], [1, 5], [0, 1, 5]), 3);
 }
 function probability_test() {
     assert.deepStrictEqual(probability([0], [0], [0]), [37, 192]);
@@ -18,5 +23,6 @@ function probability_test() {
 export const probability_test_functions = [
     ivconfigurationGenerator_test,
     isRandomGenerationRemainingIVsPossible_test,
+    countTargetIVsInherited_test,
     probability_test
 ];
