@@ -92,4 +92,10 @@ This will compile the .ts files from ```src/``` to .js files in ```docs/```, inc
 ```bash
 npm start
 ```
-which will serve the page from docs/app/ using ```http-server```.
+which will serve the page from docs/app/ using ```http-server```. For running tests you can run
+
+```
+npm test
+```
+
+which will run the tests by executing ```docs/tests/tests_entry.js```.
