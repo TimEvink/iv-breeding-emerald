@@ -3,11 +3,11 @@ import assert from "assert";
 
 import { ivconfigurationGenerator, isRandomGenerationRemainingIVsPossible, countTargetIVsInherited, probability } from '../app/probabilitycalcs.js';
 
-function ivconfigurationGenerator_test() {
+function ivconfigurationGenerator_test(): void {
     assert.deepStrictEqual([...ivconfigurationGenerator()].length, 960);
 }
 
-function isRandomGenerationRemainingIVsPossible_test() {
+function isRandomGenerationRemainingIVsPossible_test(): void {
     assert.deepStrictEqual(isRandomGenerationRemainingIVsPossible(
         new Map([[0, 1], [1, 0], [4, 1]]),
         [0, 4],
@@ -28,7 +28,7 @@ function isRandomGenerationRemainingIVsPossible_test() {
     ), true);
 }
 
-function countTargetIVsInherited_test() {
+function countTargetIVsInherited_test(): void {
     assert.strictEqual(countTargetIVsInherited(
         new Map([[0, 0], [3, 1], [5, 0]]),
         [0, 4],
@@ -49,7 +49,7 @@ function countTargetIVsInherited_test() {
     ), 3);
 }
 
-function probability_test() {
+function probability_test(): void {
     assert.deepStrictEqual(probability([0], [0], [0]), [37, 192]);
     assert.deepStrictEqual(probability([1], [1], [1]), [33, 64]);
     assert.deepStrictEqual(probability([2], [2], [2]), [17, 48]);

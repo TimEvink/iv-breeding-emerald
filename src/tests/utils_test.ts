@@ -3,14 +3,14 @@ import assert from "assert";
 
 import { gcd, combinations } from '../app/utils.js';
 
-function gcd_test() {
+function gcd_test(): void {
     assert.strictEqual(gcd(12, 18), 6);
     assert.strictEqual(gcd(7, 5), 1);
     assert.strictEqual(gcd(25, 10), 5);
     assert.strictEqual(gcd(11, 1), 1);
 }
 
-function combinations_test() {
+function combinations_test(): void {
     assert.deepStrictEqual([...combinations([1, 2, 3], -1)], []);
     assert.deepStrictEqual([...combinations([1, 2, 3], 4)], []);
     assert.deepStrictEqual([...combinations([1, 2, 3], 0)], [[]]);
