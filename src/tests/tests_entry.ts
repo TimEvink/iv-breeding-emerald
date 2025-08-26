@@ -1,23 +1,22 @@
 import { utils_test_functions } from "./utils_test.js";
 import { probability_test_functions } from "./probability_test.js";
 
-function runTest(name: string, func: () => void) {
-	try {
-		func();
-		console.log(`✅ ${name}`);
-	} catch (err) {
-		console.error(`❌ ${name}`);
-		console.error(err);
-	}
-}
-
-//gather tests.
+//gather test functions.
 const tests = [
-    ...utils_test_functions,
-    ...probability_test_functions
-]
+	...utils_test_functions,
+	...probability_test_functions
+];
 
 //run tests.
+let count = 0;
+console.log(`Running ${tests.length} tests.`);
 for (const func of tests) {
-    runTest(func.name, func);
+	count++;
+	try {
+		func();
+		console.log(`Test ${count}/${tests.length}:✅ ${func.name}`);
+	} catch (err) {
+		console.error(`Test ${count}/${tests.length}:❌ ${func.name}`);
+		console.error(err);
+	}
 }
