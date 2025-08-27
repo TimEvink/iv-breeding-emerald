@@ -1,5 +1,4 @@
 import { probabilityData } from './probabilitycalcs.js';
-;
 //initial state, hardcoded to match default values of input fields.
 const state = {
     targetIVs: [],

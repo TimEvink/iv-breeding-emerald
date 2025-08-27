@@ -1,11 +1,5 @@
 import { probabilityData } from './probabilitycalcs.js';
-import { ConfigurationOptions } from './interfaces.js';
-
-//to keep track of all user input
-interface State {
-    targetIVs: number[],
-    options: ConfigurationOptions
-};
+import { ConfigurationOptions, State } from './interfaces.js';
 
 //initial state, hardcoded to match default values of input fields.
 const state: State = {
