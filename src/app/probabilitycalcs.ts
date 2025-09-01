@@ -92,31 +92,27 @@ export function probability(
     return [numerator / g, denominator / g];
 }
 
-//generates the relevant probabilitydata in the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
-function* probabilityDataGenerator(
-    targetIVs: number[],
-    options: ConfigurationOptions
-): Generator<[number[], number[], number, number], void, unknown> {
-    const n = targetIVs.length;
-    const seen = new Set();
-    for (const P of combinations<number>(targetIVs, n - options.missingAIVs)) {
-        const Pstring = P.join('');
-        seen.add(Pstring);
-        for (const Q of combinations<number>(targetIVs, n - options.missingBIVs)) {
-            const Qstring = Q.join('');
-            if (seen.has(Qstring) && (Pstring !== Qstring)) {
-                continue;
-            }
-            yield [P, Q, ...probability(P, Q, targetIVs)];
-        }
-    }
-}
-
+//array entries are of the form [parentAIVs, parentBIVs, numerator, denominator], with numerator/denominator the corresponding exact probability.
 function probabilityData(
     targetIVs: number[],
     options: ConfigurationOptions
 ): [number[], number[], number, number][] {
-    const data = [...probabilityDataGenerator(targetIVs, options)];
+    function* dataGenerator(): Generator<[number[], number[], number, number], void, unknown> {
+        const n = targetIVs.length;
+        const seen = new Set();
+        for (const P of combinations<number>(targetIVs, n - options.missingAIVs)) {
+            const Pstring = P.join('');
+            seen.add(Pstring);
+            for (const Q of combinations<number>(targetIVs, n - options.missingBIVs)) {
+                const Qstring = Q.join('');
+                if (seen.has(Qstring) && (Pstring !== Qstring)) {
+                    continue;
+                }
+                yield [P, Q, ...probability(P, Q, targetIVs)];
+            }
+        }
+    }
+    const data = [...dataGenerator()];
     data.sort((a, b) => a[3] * b[2] - a[2] * b[3]); 
     return data;
 }
