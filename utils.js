@@ -29,3 +29,28 @@ export function* combinations(iterable, k) {
         yield indices.map(i => items[i]);
     }
 }
+//caching HOF.
+export function lruCache(func, options = { maxSize: 100, shouldCache: () => true }) {
+    if (options.maxSize < 1)
+        return func;
+    const cache = new Map();
+    function wrappedfunc(...args) {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) {
+            const value = cache.get(key);
+            //set key again to update key order.
+            cache.set(key, value);
+            return value;
+        }
+        const result = func(...args);
+        if (options.shouldCache(result)) {
+            if (options.maxSize <= cache.size) {
+                cache.delete(cache.keys().next().value);
+            }
+            cache.set(key, result);
+        }
+        return result;
+    }
+    ;
+    return wrappedfunc;
+}

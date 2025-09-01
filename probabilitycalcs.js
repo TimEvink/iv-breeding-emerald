@@ -1,4 +1,4 @@
-import { gcd, combinations } from './utils.js';
+import { gcd, combinations, lruCache } from './utils.js';
 export function* ivconfigurationGenerator() {
     for (let s1 = 0; s1 < 6; s1++) {
         for (const s2 of [1, 2, 3, 4, 5]) {
@@ -73,8 +73,13 @@ function* probabilityDataGenerator(targetIVs, options) {
         }
     }
 }
-export function probabilityData(targetIVs, options) {
+function probabilityData(targetIVs, options) {
     const data = [...probabilityDataGenerator(targetIVs, options)];
     data.sort((a, b) => a[3] * b[2] - a[2] * b[3]);
     return data;
 }
+//probabilityData wrapped to add caching.
+export const probabilityDataWithCache = lruCache(probabilityData, {
+    maxSize: 20,
+    shouldCache: (data) => data.length > 3
+});
