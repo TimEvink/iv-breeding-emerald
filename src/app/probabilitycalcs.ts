@@ -1,5 +1,5 @@
 import { gcd, combinations, lruCache } from './utils.js';
-import { ConfigurationOptions } from './interfaces.js';
+import { ConfigurationOptions, IVinheritanceconfiguration, InheritedIVs } from './interfaces.js';
 
 //stats are worked internally with by integers: we use 0, 1, 2, 3, 4, 5 for HP, Atk, Def, Sp.A, Sp.D and Spe, respectively.
 //also: 0 is used for parent A, 1 is used for parent B.
@@ -10,13 +10,6 @@ import { ConfigurationOptions } from './interfaces.js';
 // - SpE is passed from A
 //
 // the order is important as newer steps can override previously inherited stats.
-
-type IVinheritanceconfiguration = [
-  [number, number],
-  [number, number],
-  [number, number]
-];
-type InheritedIVs = Map<number, number>;
 
 export function* ivconfigurationGenerator(): Generator<IVinheritanceconfiguration, void, unknown> {
     for (let s1 = 0; s1 < 6; s1++) {
