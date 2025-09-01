@@ -1,4 +1,4 @@
-import { probabilityData } from './probabilitycalcs.js';
+import { probabilityDataWithCache } from './probabilitycalcs.js';
 import { ConfigurationOptions, State } from './interfaces.js';
 
 //initial state, hardcoded to match default values of input fields.
@@ -16,7 +16,7 @@ const tablebody = document.getElementById('parent-ivs-data')!;
 //fetches probability data and constructs the relevant tables.
 function calculateAndRender(): void {
     tablebody.replaceChildren();
-    const probabilitydata = probabilityData(state.targetIVs, state.options);
+    const probabilitydata = probabilityDataWithCache(state.targetIVs, state.options);
     if (probabilitydata.length === 0) {
         document.getElementById('noresultplaceholder')!.classList.toggle('hidden', false);
         return;

@@ -1,4 +1,4 @@
-import { gcd, combinations } from './utils.js';
+import { gcd, combinations, lruCache } from './utils.js';
 import { ConfigurationOptions } from './interfaces.js';
 
 //stats are worked internally with by integers: we use 0, 1, 2, 3, 4, 5 for HP, Atk, Def, Sp.A, Sp.D and Spe, respectively.
@@ -112,7 +112,7 @@ function* probabilityDataGenerator(
     }
 }
 
-export function probabilityData(
+function probabilityData(
     targetIVs: number[],
     options: ConfigurationOptions
 ): [number[], number[], number, number][] {
@@ -120,3 +120,12 @@ export function probabilityData(
     data.sort((a, b) => a[3] * b[2] - a[2] * b[3]); 
     return data;
 }
+
+//probabilityData wrapped to add caching.
+export const probabilityDataWithCache = lruCache(
+    probabilityData,
+    {
+        maxSize: 20,
+        shouldCache: (data) => data.length > 3
+    }
+);

@@ -27,3 +27,33 @@ export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[
         yield indices.map(i => items[i]);
     }
 }
+
+//caching HOF.
+export function lruCache<F extends (...args: any[]) => any>(
+    func: F,
+    options: {
+        maxSize: number;
+        shouldCache: (result: ReturnType<F>) => boolean;
+    } = {maxSize: 100, shouldCache: () => true}
+): F {
+    if (options.maxSize < 1) return func;
+    const cache = new Map<string, ReturnType<F>>();
+    function wrappedfunc(...args: Parameters<F>): ReturnType<F> {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) {
+            const value = cache.get(key)!;
+            //set key again to update key order.
+            cache.set(key, value);
+            return value;
+        }
+        const result = func(...args);
+        if (options.shouldCache(result)) {
+            if (options.maxSize <= cache.size) {
+                cache.delete(cache.keys().next().value as string);
+            }
+            cache.set(key, result);
+        }
+        return result;
+    };
+    return wrappedfunc as F;
+}
