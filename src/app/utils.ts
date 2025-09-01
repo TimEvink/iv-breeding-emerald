@@ -32,8 +32,8 @@ export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[
 export function lruCache<F extends (...args: any[]) => any>(
     func: F,
     options: {
-        maxSize: number;
-        shouldCache: (result: ReturnType<F>) => boolean;
+        maxSize: number,
+        shouldCache: (result: ReturnType<F>) => boolean
     } = {maxSize: 100, shouldCache: () => true}
 ): F {
     if (options.maxSize < 1) return func;
@@ -54,6 +54,6 @@ export function lruCache<F extends (...args: any[]) => any>(
             cache.set(key, result);
         }
         return result;
-    };
+    }
     return wrappedfunc as F;
 }
