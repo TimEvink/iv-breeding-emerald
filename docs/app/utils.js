@@ -30,12 +30,13 @@ export function* combinations(iterable, k) {
     }
 }
 //caching HOF.
-export function lruCache(func, options = { maxSize: 100, shouldCache: () => true }) {
+//the makeKey function has to be injective, i.e. different inputs generate different key strings.
+export function lruCache(func, options = { maxSize: 100, shouldCache: () => true, makeKey: (...args) => JSON.stringify(args) }) {
     if (options.maxSize < 1)
         return func;
     const cache = new Map();
     function wrappedfunc(...args) {
-        const key = JSON.stringify(args);
+        const key = options.makeKey(...args);
         if (cache.has(key)) {
             const value = cache.get(key);
             //set key again to update key order.
@@ -51,6 +52,5 @@ export function lruCache(func, options = { maxSize: 100, shouldCache: () => true
         }
         return result;
     }
-    ;
     return wrappedfunc;
 }

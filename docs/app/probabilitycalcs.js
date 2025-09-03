@@ -9,8 +9,10 @@ import { gcd, combinations, lruCache } from './utils.js';
 // the order is important as newer steps can override previously inherited stats.
 export function* ivconfigurationGenerator() {
     for (let s1 = 0; s1 < 6; s1++) {
-        for (const s2 of [1, 2, 3, 4, 5]) {
-            for (const s3 of [1, 3, 4, 5]) {
+        for (let s2 = 1; s2 < 6; s2++) {
+            for (let s3 = 1; s3 < 6; s3++) {
+                if (s3 === 2)
+                    continue;
                 for (let p1 = 0; p1 < 2; p1++) {
                     for (let p2 = 0; p2 < 2; p2++) {
                         for (let p3 = 0; p3 < 2; p3++) {
@@ -89,5 +91,6 @@ function probabilityData(targetIVs, options) {
 //probabilityData wrapped to add caching.
 export const probabilityDataWithCache = lruCache(probabilityData, {
     maxSize: 20,
-    shouldCache: (data) => data.length > 3
+    shouldCache: (data) => data.length > 3,
+    makeKey: (targetIVs, options) => `${options.missingAIVs}${options.missingBIVs}${targetIVs.join('')}`
 });

@@ -29,17 +29,19 @@ export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[
 }
 
 //caching HOF.
+//the makeKey function has to be injective, i.e. different inputs generate different key strings.
 export function lruCache<F extends (...args: any[]) => any>(
     func: F,
     options: {
         maxSize: number,
-        shouldCache: (result: ReturnType<F>) => boolean
-    } = {maxSize: 100, shouldCache: () => true}
+        shouldCache: (result: ReturnType<F>) => boolean,
+        makeKey: (...args: Parameters<F>) => string
+    } = { maxSize: 100, shouldCache: () => true, makeKey: (...args) => JSON.stringify(args) }
 ): F {
     if (options.maxSize < 1) return func;
     const cache = new Map<string, ReturnType<F>>();
     function wrappedfunc(...args: Parameters<F>): ReturnType<F> {
-        const key = JSON.stringify(args);
+        const key = options.makeKey(...args);
         if (cache.has(key)) {
             const value = cache.get(key)!;
             //set key again to update key order.
