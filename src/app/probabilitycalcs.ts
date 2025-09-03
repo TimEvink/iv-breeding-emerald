@@ -94,10 +94,10 @@ function probabilityData(
     function* dataGenerator(): Generator<[number[], number[], number, number], void, unknown> {
         const n = targetIVs.length;
         const seen = new Set();
-        for (const P of combinations<number>(targetIVs, n - options.missingAIVs)) {
+        for (const P of combinations(targetIVs, n - options.missingAIVs)) {
             const Pstring = P.join('');
             seen.add(Pstring);
-            for (const Q of combinations<number>(targetIVs, n - options.missingBIVs)) {
+            for (const Q of combinations(targetIVs, n - options.missingBIVs)) {
                 const Qstring = Q.join('');
                 if (seen.has(Qstring) && (Pstring !== Qstring)) {
                     continue;
