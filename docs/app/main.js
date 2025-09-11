@@ -1,5 +1,5 @@
 import { probabilityDataWithCache } from './probabilitycalcs.js';
-//initial state, hardcoded to match default values of input fields.
+const stats = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
 const state = {
     targetIVs: [],
     options: {
@@ -7,10 +7,40 @@ const state = {
         missingBIVs: 1
     }
 };
-const stats = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
-const tablebody = document.getElementById('parent-ivs-data');
+//update state from url query parameters if needed
+function initializeState() {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.size === 0)
+        return;
+    const raw = searchParams.get('s');
+    try {
+        if (!raw)
+            throw new Error('Invalid query parameter used');
+        if (!/^[0-3]{2}[0-5]{0,6}$/.test(raw))
+            throw new Error('Invalid parameter format');
+        //set state from url
+        state.targetIVs = Array.from(new Set(raw.slice(2)), Number).sort((a, b) => a - b);
+        state.options = { missingAIVs: Number(raw[0]), missingBIVs: Number(raw[1]) };
+        //set user input from state
+        for (const i of state.targetIVs) {
+            document.querySelector(`#target-ivs-header-row td.toggleable[data-stat="${i}"]`).classList.toggle('selected', true);
+        }
+        document.querySelector('input[data-prop="missingAIVs"]').value = state.options.missingAIVs.toString();
+        document.querySelector('input[data-prop="missingBIVs"]').value = state.options.missingBIVs.toString();
+    }
+    catch (err) {
+        console.warn("Falling back to default state because of bad query parameters:", err);
+    }
+}
+function updateUrl() {
+    const url = (state.targetIVs.length === 0 && state.options.missingAIVs === 1 && state.options.missingBIVs === 1)
+        ? `${location.origin}${location.pathname}`
+        : `${location.origin}${location.pathname}?s=${state.options.missingAIVs}${state.options.missingBIVs}${state.targetIVs.join('')}`;
+    history.replaceState(null, "", url);
+}
 //fetches probability data and constructs the relevant tables.
 function calculateAndRender() {
+    const tablebody = document.getElementById('parent-ivs-data');
     tablebody.replaceChildren();
     const probabilitydata = probabilityDataWithCache(state.targetIVs, state.options);
     if (probabilitydata.length === 0) {
@@ -41,6 +71,7 @@ function calculateAndRender() {
             tablebody.appendChild(tablerow);
         }
     }
+    updateUrl();
 }
 document.getElementById('target-ivs-header-row').addEventListener('click', (event) => {
     if (event.target instanceof HTMLTableCellElement && 'stat' in event.target.dataset) {
@@ -69,3 +100,5 @@ document.getElementById('options-body').addEventListener('input', (event) => {
         calculateAndRender();
     }
 });
+initializeState();
+calculateAndRender();

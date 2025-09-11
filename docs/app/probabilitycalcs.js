@@ -91,6 +91,6 @@ function probabilityData(targetIVs, options) {
 //probabilityData wrapped to add caching.
 export const probabilityDataWithCache = lruCache(probabilityData, {
     maxSize: 20,
-    shouldCache: (data) => data.length > 3,
+    shouldCache: data => data.length > 3,
     makeKey: (targetIVs, options) => `${options.missingAIVs}${options.missingBIVs}${targetIVs.join('')}`
 });
