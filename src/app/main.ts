@@ -72,7 +72,6 @@ function calculateAndRender(): void {
             tablebody.appendChild(tablerow);
         }
     }
-    updateUrl();
 }
 
 document.getElementById('target-ivs-header-row')!.addEventListener('click', (event) => {
@@ -87,6 +86,7 @@ document.getElementById('target-ivs-header-row')!.addEventListener('click', (eve
             state.targetIVs.sort((a, b) => a - b);
         }
         calculateAndRender();
+        updateUrl();
     }
 });
 
@@ -100,8 +100,10 @@ document.getElementById('options-body')!.addEventListener('input', (event) => {
         //update state
         state.options[event.target.dataset.prop! as keyof ConfigurationOptions] = value;
         calculateAndRender();
+        updateUrl();
     }
 });
 
 initializeState();
 calculateAndRender();
+updateUrl();
