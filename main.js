@@ -71,7 +71,6 @@ function calculateAndRender() {
             tablebody.appendChild(tablerow);
         }
     }
-    updateUrl();
 }
 document.getElementById('target-ivs-header-row').addEventListener('click', (event) => {
     if (event.target instanceof HTMLTableCellElement && 'stat' in event.target.dataset) {
@@ -86,6 +85,7 @@ document.getElementById('target-ivs-header-row').addEventListener('click', (even
             state.targetIVs.sort((a, b) => a - b);
         }
         calculateAndRender();
+        updateUrl();
     }
 });
 document.getElementById('options-body').addEventListener('input', (event) => {
@@ -98,7 +98,9 @@ document.getElementById('options-body').addEventListener('input', (event) => {
         //update state
         state.options[event.target.dataset.prop] = value;
         calculateAndRender();
+        updateUrl();
     }
 });
 initializeState();
 calculateAndRender();
+updateUrl();
