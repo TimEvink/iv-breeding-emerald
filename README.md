@@ -99,3 +99,6 @@ npm test
 ```
 
 which will run the tests by executing ```docs/tests/tests_entry.js```.
+
+## Attributions
+Favicon sprite © Nintendo/Game Freak/The Pokémon Company. Used for educational purposes under fair use.
