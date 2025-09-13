@@ -12,15 +12,16 @@ function initializeState() {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.size === 0)
         return;
-    const raw = searchParams.get('s');
     try {
+        const raw = searchParams.get('s');
         if (!raw)
-            throw new Error('Invalid query parameter used');
-        if (!/^[0-3]{2}[0-5]{0,6}$/.test(raw))
-            throw new Error('Invalid parameter format');
+            throw new Error('only the query parameter "s" is allowed.');
+        const match = /^([0-3])([0-3])([0-5]{0,6})$/.exec(raw);
+        if (!match)
+            throw new Error('invalid value for query parameter "s".');
         //set state from url
-        state.targetIVs = Array.from(new Set(raw.slice(2)), Number).sort((a, b) => a - b);
-        state.options = { missingAIVs: Number(raw[0]), missingBIVs: Number(raw[1]) };
+        state.targetIVs = Array.from(new Set(match[3]), Number).sort((a, b) => a - b);
+        state.options = { missingAIVs: Number(match[1]), missingBIVs: Number(match[2]) };
         //set user input from state
         for (const i of state.targetIVs) {
             document.querySelector(`#target-ivs-header-row td.toggleable[data-stat="${i}"]`).classList.toggle('selected', true);
@@ -29,7 +30,7 @@ function initializeState() {
         document.querySelector('input[data-prop="missingBIVs"]').value = state.options.missingBIVs.toString();
     }
     catch (err) {
-        console.warn("Falling back to default state because of bad query parameters:", err);
+        console.warn("Falling back to default state because of incorrect query parameter usage.\n", err);
     }
 }
 function updateUrl() {
@@ -72,23 +73,28 @@ function calculateAndRender() {
         }
     }
 }
-document.getElementById('target-ivs-header-row').addEventListener('click', (event) => {
+function onChanges(initialize = false) {
+    if (initialize)
+        initializeState();
+    calculateAndRender();
+    updateUrl();
+}
+document.getElementById('target-ivs-header-row').addEventListener('click', event => {
     if (event.target instanceof HTMLTableCellElement && 'stat' in event.target.dataset) {
         event.target.classList.toggle('selected');
         //update targetIVs
         const index = Number(event.target.dataset.stat);
         if (state.targetIVs.includes(index)) {
-            state.targetIVs = state.targetIVs.filter((x) => x !== index);
+            state.targetIVs = state.targetIVs.filter(x => x !== index);
         }
         else {
             state.targetIVs.push(index);
             state.targetIVs.sort((a, b) => a - b);
         }
-        calculateAndRender();
-        updateUrl();
+        onChanges();
     }
 });
-document.getElementById('options-body').addEventListener('input', (event) => {
+document.getElementById('options-body').addEventListener('input', event => {
     if (event.target instanceof HTMLInputElement) {
         //retrieve and sanitize value
         let value = Math.round(Number(event.target.value) || 0);
@@ -97,10 +103,8 @@ document.getElementById('options-body').addEventListener('input', (event) => {
         event.target.value = value.toString();
         //update state
         state.options[event.target.dataset.prop] = value;
-        calculateAndRender();
-        updateUrl();
+        onChanges();
     }
 });
-initializeState();
-calculateAndRender();
-updateUrl();
+//initialize page
+onChanges(true);
