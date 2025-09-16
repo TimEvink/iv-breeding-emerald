@@ -106,9 +106,7 @@ function probabilityData(
             }
         }
     }
-    const data = [...dataGenerator()];
-    data.sort((a, b) => a[3] * b[2] - a[2] * b[3]); 
-    return data;
+    return [...dataGenerator()].sort((a, b) => a[3] * b[2] - a[2] * b[3]);
 }
 
 //probabilityData wrapped to add caching.

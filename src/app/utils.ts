@@ -13,7 +13,7 @@ export function* combinations<T>(iterable: Iterable<T>, k: number): Generator<T[
     if (k === 0) yield [];
     if (k <= 0 || n < k) return;
     const indices = [...Array(k).keys()];
-    yield indices.map((i) => items[i]);
+    yield indices.map(i => items[i]);
     while (true) {
         let i = k - 1;
         while (i >= 0 && indices[i] === i + n - k) {
@@ -34,9 +34,13 @@ export function lruCache<F extends (...args: any[]) => any>(
     func: F,
     options: {
         maxSize: number,
-        shouldCache: (result: ReturnType<F>) => boolean,
+        shouldCache: (value: ReturnType<F>) => boolean,
         makeKey: (...args: Parameters<F>) => string
-    } = { maxSize: 100, shouldCache: () => true, makeKey: (...args) => JSON.stringify(args) }
+    } = {
+        maxSize: 100,
+        shouldCache: () => true,
+        makeKey: (...args) => JSON.stringify(args)
+    }
 ): F {
     if (options.maxSize < 1) return func;
     const cache = new Map<string, ReturnType<F>>();
@@ -48,14 +52,14 @@ export function lruCache<F extends (...args: any[]) => any>(
             cache.set(key, value);
             return value;
         }
-        const result = func(...args);
-        if (options.shouldCache(result)) {
-            if (options.maxSize <= cache.size) {
+        const value = func(...args);
+        if (options.shouldCache(value)) {
+            if (options.maxSize < cache.size + 1) {
                 cache.delete(cache.keys().next().value as string);
             }
-            cache.set(key, result);
+            cache.set(key, value);
         }
-        return result;
+        return value;
     }
     return wrappedfunc as F;
 }

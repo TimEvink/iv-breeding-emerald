@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && npx http-server docs/app -p 3000",
+    "start": "tsc && npx http-server docs/app/ -p 3000",
     "test": "tsc && node ./docs/tests/tests_entry.js"
   },
   "devDependencies": {
