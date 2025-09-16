@@ -14,7 +14,7 @@ export function* combinations(iterable, k) {
     if (k <= 0 || n < k)
         return;
     const indices = [...Array(k).keys()];
-    yield indices.map((i) => items[i]);
+    yield indices.map(i => items[i]);
     while (true) {
         let i = k - 1;
         while (i >= 0 && indices[i] === i + n - k) {
@@ -31,7 +31,11 @@ export function* combinations(iterable, k) {
 }
 //caching HOF.
 //the makeKey function has to be injective, i.e. different inputs generate different key strings.
-export function lruCache(func, options = { maxSize: 100, shouldCache: () => true, makeKey: (...args) => JSON.stringify(args) }) {
+export function lruCache(func, options = {
+    maxSize: 100,
+    shouldCache: () => true,
+    makeKey: (...args) => JSON.stringify(args)
+}) {
     if (options.maxSize < 1)
         return func;
     const cache = new Map();
@@ -43,14 +47,14 @@ export function lruCache(func, options = { maxSize: 100, shouldCache: () => true
             cache.set(key, value);
             return value;
         }
-        const result = func(...args);
-        if (options.shouldCache(result)) {
-            if (options.maxSize <= cache.size) {
+        const value = func(...args);
+        if (options.shouldCache(value)) {
+            if (options.maxSize < cache.size + 1) {
                 cache.delete(cache.keys().next().value);
             }
-            cache.set(key, result);
+            cache.set(key, value);
         }
-        return result;
+        return value;
     }
     return wrappedfunc;
 }
