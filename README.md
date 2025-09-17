@@ -96,18 +96,20 @@ or just
 tsc
 ```
 
-This will compile the .ts files from ```src/``` to .js files in ```docs/```, including the tests. For local serving you can run
+This will compile the ```.ts``` files from ```src/``` to ```.js``` files in ```docs/```, including the tests.
+
+To serve locally you can run
 
 ```bash
 npm start
 ```
-which will serve the page from docs/app/ using ```docs/serve.js``` locally on port 3000. If you want a different port you can add a parameter. For example ```npm start 8000``` will serve the page locally on port 8000. For running tests you can run
+which will serve the page on port 3000. If you want a different port you can add an optional argument. For example ```npm start 8000``` will serve on port 8000.
+
+For running tests you can run
 
 ```
 npm test
 ```
-
-which will run the tests by executing ```docs/tests/tests_entry.js```.
 
 ## Attributions
 Favicon sprite © Nintendo/Game Freak/The Pokémon Company. Used for educational purposes under fair use.
