@@ -76,7 +76,7 @@ iv-breeding-emerald/
 │ │ ├── index.html --> manually placed
 │ │ ├── styles.css --> manually placed
 │ │ └── favicon.ico --> manually placed
-│ └── tests/ --> compiled tests
+│ └── serve.js --> for local serving
 ⋮
 ```
 
@@ -85,7 +85,7 @@ To build locally you'll need Node installed and clone the repo. Running from the
 ```bash
 npm i
 ```
-will install ```typescript``` and ```http-server``` locally inside the project as dev dependencies; there are no dependencies for the served files.
+will install ```typescript``` locally inside the project as dev dependency; there are no dependencies for the served files.
 
 To compile the typescript you can run either
 ```bash
@@ -101,7 +101,7 @@ This will compile the .ts files from ```src/``` to .js files in ```docs/```, inc
 ```bash
 npm start
 ```
-which will serve the page from docs/app/ using ```http-server```. For running tests you can run
+which will serve the page from docs/app/ using ```docs/serve.js```. For running tests you can run
 
 ```
 npm test
