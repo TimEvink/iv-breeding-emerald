@@ -71,7 +71,7 @@ iv-breeding-emerald/
 │ ├── app/ --> .ts source code
 │ └── tests/ --> .ts tests
 ├── docs/ --> ts build outout
-│ ├── app/ --> compiled app, gets served by gh-pages.
+│ ├── app/ --> compiled app, gets served by gh-pages
 │ │ ├── *.js --> from src/app/
 │ │ ├── index.html --> manually placed
 │ │ ├── styles.css --> manually placed
@@ -101,7 +101,7 @@ This will compile the .ts files from ```src/``` to .js files in ```docs/```, inc
 ```bash
 npm start
 ```
-which will serve the page from docs/app/ using ```docs/serve.js```. For running tests you can run
+which will serve the page from docs/app/ using ```docs/serve.js``` locally on port 3000. If you want a different port you can add a parameter. For example ```npm start 8000``` will serve the page locally on port 8000. For running tests you can run
 
 ```
 npm test
