@@ -25,9 +25,11 @@ const colors = {
 function timestamp() {
     return new Date().toLocaleTimeString("en-GB", { hour12: false });
 }
+
 function logInfo(message) {
     console.log(`${colors.green}[${timestamp()}] ${message}${colors.reset}`);
 }
+
 function logRequest(method, url, status) {
   const color = status >= 400 ? colors.red : colors.cyan;
   console.log(`${color}[${timestamp()}] ${method} ${url} → ${status}${colors.reset}`);
@@ -69,5 +71,5 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(port, '127.0.0.1', () => {
-    logInfo(`listening on http://localhost:${port}`);
+    logInfo(`listening on http://localhost:${port}\n`);
 });
