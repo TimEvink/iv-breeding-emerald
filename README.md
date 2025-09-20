@@ -67,17 +67,17 @@ This project is written in TypeScript and plain HTML/CSS. The project structure 
 
 ```markdown
 iv-breeding-emerald/
-├── src/
+├── src/ --> root .ts directory
 │ ├── app/ --> .ts source code
 │ ├── tests/ --> .ts tests
 │ └── serve.ts --> for local serving
 ├── docs/ --> ts build outout
-│ ├── app/ --> compiled app, gets served by gh-pages
-│ │ ├── *.js --> from src/app/
-│ │ ├── index.html --> manually placed
-│ │ ├── styles.css --> manually placed
-│ │ └── favicon.ico --> manually placed
-⋮  ⋮ 
+│ └── app/ --> compiled app, gets served by gh-pages
+│   ├── *.js --> from src/app/
+│   ├── index.html --> manually placed
+│   ├── styles.css --> manually placed
+│   └── favicon.ico --> manually placed
+⋮
 ```
 
 To build locally you'll need Node installed and clone the repo. Running from the project root
