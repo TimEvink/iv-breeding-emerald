@@ -4,9 +4,36 @@ node_modules/
 # TypeScript build cache
 *.tsbuildinfo
 
-# VS Code
+#ignore docs contents unless it gets served.
+docs/*
+!docs/app/
+!docs/app/**
+
+# Build output
+dist/
+build/
+
+# Editor/IDE folders
+.*.sw?   # Vim swap files
+.*.swo
+.*.swn
+.*.sublime-*
+.idea/
 .vscode/
 *.code-workspace
 
-#Compiled typescript files that dont get served.
-docs/tests/**/*.js
+# Generic backup/temp files
+*~      # Vim/Emacs backups
+\#*\#   # Emacs auto-save
+*.bak
+
+# OS generated files
+.DS_Store    # macOS
+Thumbs.db    # Windows
+desktop.ini  # Windows
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

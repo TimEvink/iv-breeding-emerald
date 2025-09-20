@@ -69,15 +69,15 @@ This project is written in TypeScript and plain HTML/CSS. The project structure 
 iv-breeding-emerald/
 ├── src/
 │ ├── app/ --> .ts source code
-│ └── tests/ --> .ts tests
+│ ├── tests/ --> .ts tests
+│ └── serve.ts --> for local serving
 ├── docs/ --> ts build outout
 │ ├── app/ --> compiled app, gets served by gh-pages
 │ │ ├── *.js --> from src/app/
 │ │ ├── index.html --> manually placed
 │ │ ├── styles.css --> manually placed
 │ │ └── favicon.ico --> manually placed
-│ └── serve.js --> for local serving
-⋮
+⋮  ⋮ 
 ```
 
 To build locally you'll need Node installed and clone the repo. Running from the project root
@@ -85,25 +85,24 @@ To build locally you'll need Node installed and clone the repo. Running from the
 ```bash
 npm i
 ```
-will install ```typescript``` locally inside the project as dev dependency; there are no dependencies for the served files.
 
-To compile the typescript you can run either
+will install ```typescript``` and ```@types/node``` locally inside the project as dev dependencies; there are no dependencies for the served files.
+
+To compile the typescript you can run
+
 ```bash
 npm run build
 ```
-or just
-```bash
-tsc
-```
 
-This will compile the ```.ts``` files from ```src/``` to ```.js``` files in ```docs/```, including the tests.
+This will compile all ```.ts``` files from ```src/``` to ```.js``` files in ```docs/```.
 
 To serve locally you can run
 
 ```bash
 npm start
 ```
-which will serve the page on port 3000. If you want a different port you can add an optional argument. For example ```npm start 8000``` will serve on port 8000.
+
+which will serve the page on localhost:3000. If you want a different port you can add an optional argument. For example ```npm start 8000``` will serve on port 8000.
 
 For running tests you can run
 

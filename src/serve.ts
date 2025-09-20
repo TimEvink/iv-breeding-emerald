@@ -1,6 +1,6 @@
-import path from "node:path";
-import fs from "node:fs";
-import http from "node:http";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import * as http from "node:http";
 
 
 const MIMES = {
@@ -22,17 +22,17 @@ const colors = {
   cyan: "\x1b[36m"
 };
 
-function timestamp() {
+function timestamp(): string {
     return new Date().toLocaleTimeString("en-GB", { hour12: false });
 }
 
-function logInfo(message) {
+function logInfo(message: string): void {
     console.log(`${colors.green}[${timestamp()}] ${message}${colors.reset}`);
 }
 
-function logRequest(method, url, status) {
+function logRequest(method: string | undefined, url: string | undefined, status: number): void {
   const color = status >= 400 ? colors.red : colors.cyan;
-  console.log(`${color}[${timestamp()}] ${method} ${url} → ${status}${colors.reset}`);
+  console.log(`${color}[${timestamp()}] ${method ?? ""} ${url ?? ""} → ${status}${colors.reset}`);
 }
 
 const server = http.createServer((request, response) => {
@@ -42,7 +42,7 @@ const server = http.createServer((request, response) => {
         logRequest(request.method, request.url, 405);
         return;
     }
-    const strippedurl = request.url.split("?")[0];
+    const strippedurl = request.url?.split("?")[0] ?? "";
     const reqpath = strippedurl === "/" ? "index.html" : strippedurl;
     const ext = path.extname(reqpath);
     if (!(ext in MIMES)) {
@@ -64,7 +64,7 @@ const server = http.createServer((request, response) => {
             logRequest(request.method, request.url, 500);
             return;
         }
-        response.writeHead(200, { "Content-Type": MIMES[ext] });
+        response.writeHead(200, { "Content-Type": MIMES[ext as keyof typeof MIMES] });
         response.end(data);
         logRequest(request.method, request.url, 200);
     });

@@ -1,5 +1,4 @@
-// @ts-ignore
-import assert from "assert";
+import * as assert from "node:assert";
 
 import { gcd, combinations } from '../app/utils.js';
 

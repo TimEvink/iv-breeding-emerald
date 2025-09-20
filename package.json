@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && node ./docs/serve.js",
-    "test": "tsc && node ./docs/tests/tests_entry.js"
+    "build": "tsc -p tsconfig.app.json && tsc -p tsconfig.dev.json",
+    "start": "npm run build && node ./docs/serve.js",
+    "test": "tsc -p tsconfig.dev.json && node ./docs/tests/tests_entry.js"
   },
   "devDependencies": {
-    "typescript": "5.6.3"
+    "typescript": "5.9.2",
+    "@types/node": "24.5.2"
   },
   "engines": {
     "node": ">=18.0.0"
