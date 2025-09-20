@@ -5,8 +5,6 @@
         "outDir": "docs",
         "types": ["node"]
     },
-    "include": [
-        "src/tests/**/*",
-        "src/serve.ts"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["src/app/**/*"]
 }
