@@ -2,7 +2,6 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import * as http from "node:http";
 
-
 const MIMES = {
     ".html": "text/html",
     ".css": "text/css",
@@ -30,16 +29,16 @@ function logInfo(message: string): void {
     console.log(`${colors.green}[${timestamp()}] ${message}${colors.reset}`);
 }
 
-function logRequest(method: string | undefined, url: string | undefined, status: number): void {
+function logRequest(request: http.IncomingMessage, status: number): void {
   const color = status >= 400 ? colors.red : colors.cyan;
-  console.log(`${color}[${timestamp()}] ${method ?? ""} ${url ?? ""} → ${status}${colors.reset}`);
+  console.log(`${color}[${timestamp()}] ${request.method ?? ""} ${request.url ?? ""} → ${status}${colors.reset}`);
 }
 
 const server = http.createServer((request, response) => {
     if (!(request.method === "GET")) {
         response.writeHead(405, { "Content-Type": "text/plain" });
         response.end("Method not allowed");
-        logRequest(request.method, request.url, 405);
+        logRequest(request, 405);
         return;
     }
     const strippedurl = request.url?.split("?")[0] ?? "";
@@ -48,7 +47,7 @@ const server = http.createServer((request, response) => {
     if (!(ext in MIMES)) {
         response.writeHead(415, { "Content-Type": "text/plain" });
         response.end("Unsupported media type");
-        logRequest(request.method, request.url, 415);
+        logRequest(request, 415);
         return;
     }
     fs.readFile(path.join(baseDir, reqpath), (error, data) => {
@@ -56,17 +55,17 @@ const server = http.createServer((request, response) => {
             if (error.code === "ENOENT") {
                 response.writeHead(404, { "Content-Type": "text/plain" });
                 response.end("Not found");
-                logRequest(request.method, request.url, 404);
+                logRequest(request, 404);
                 return;
             }
             response.writeHead(500, { "Content-Type": "text/plain" });
             response.end("Error reading file");
-            logRequest(request.method, request.url, 500);
+            logRequest(request, 500);
             return;
         }
         response.writeHead(200, { "Content-Type": MIMES[ext as keyof typeof MIMES] });
         response.end(data);
-        logRequest(request.method, request.url, 200);
+        logRequest(request, 200);
     });
 });
 
