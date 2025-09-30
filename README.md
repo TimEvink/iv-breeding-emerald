@@ -18,12 +18,12 @@ This also means that if for example you want some stat at 30 IVs for Hidden Powe
 
 ## Examples
 
-Say you have selected Hp, Atk and Spe, and you intend to have these stats at 31 IVs. The first result, namely
+Say you have selected HP, Atk and Spe, and you intend to have these stats at 31 IVs. The first result, namely
 
-- parent A: Hp, Atk
+- parent A: HP, Atk
 - parent B: Atk, Spe
 
-thus assumes that you work with parent A having 31 IVs in Hp and Atk, and parent B having 31 IVs in Atk and Spe. The corresponding probability is then the probability of hatching a Pokémon with 31 IVs in Hp, Atk and Spe coming from this parent pair.
+thus assumes that you work with parent A having 31 IVs in HP and Atk, and parent B having 31 IVs in Atk and Spe. The corresponding probability is then the probability of hatching a Pokémon with 31 IVs in HP, Atk and Spe coming from this parent pair.
 
 Now say you want to breed a Beldum with 31 IVs in 4 stats from:
 
@@ -72,11 +72,13 @@ iv-breeding-emerald/
 │ ├── tests/ --> .ts tests
 │ └── serve.ts --> for local serving
 ├── docs/ --> ts build outout
-│ └── app/ --> compiled app, gets served by gh-pages
-│   ├── *.js --> from src/app/
-│   ├── index.html --> manually placed
-│   ├── styles.css --> manually placed
-│   └── favicon.ico --> manually placed
+│ ├── app/ --> compiled app, gets served by gh-pages
+│ │ ├── *.js --> from src/app/
+│ │ ├── index.html --> manually placed
+│ │ ├── styles.css --> manually placed
+│ │ └── favicon.ico --> manually placed
+| ├── tests/
+| └── serve.js
 ⋮
 ```
 
